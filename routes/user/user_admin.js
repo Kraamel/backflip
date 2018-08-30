@@ -115,48 +115,49 @@ router.get('/list/:sort?', function(req, res, next) {
 });
 
 //@todo only works for email users because the email logic is bound to the email auth at the moment
-router.get('/monthly/:action?', function(req, res, next) {
+router.get('/email/:action?', function(req, res, next) {
   User.find({
-    'orgsAndRecords.organisation': res.locals.organisation._id,
-    //@todo this next line should not be, this logic should work for all login strategies, plus it responds a false count
-    'email.value': {$exists: true}
+    'orgsAndRecords.organisation': res.locals.organisation._id
     })
-  .sort({date: -1})
   .populate('orgsAndRecords.record')
   .exec(function(err, users) {
     if (err) return next(err);
-    var extractLength = 0;
-    var senderRecordId = res.locals.user.getRecordIdByOrgId(res.locals.organisation._id);
     var records = users
-      .map(user => user.orgsAndRecords.find(orgAndRecord => res.locals.organisation._id.equals(orgAndRecord.organisation)).record)
-      .filter(record => record &&
-        !record._id.equals(senderRecordId) &&
-        record.description.length > 36 &&
-        extractLength++ < 3 );
-    res.render('emails/monthly_extract', {layout: false, records: records}, function(err, html) {
-      if (req.params.action !== 'send') users = [res.locals.user];
-      users.
-      forEach(user => EmailUser.sendMonthlyEmail(
-        user,
-        res.locals.user,
-        res.locals.organisation,
-        users.length,
-        html,
-        res,
-        function(err, user) {
-          if (err) return next(err);
-          return console.log(`MONTHLY ${res.locals.user.loginEmail} <${res.locals.user._id}> sent the monthly email to ${user.loginEmail} <${user._id}> from ${res.locals.organisation.tag} <${res.locals.organisation._id}>`);
-        }
-      ));
-      return res.render('index',
-        {
-          title: 'Monthly',
-          details: `Sending ${users.length} emails in ${res.locals.organisation.name}.`,
-          content: users.map(user => user.loginEmail)
-        }
-      );
-    });
+      .map(user => user.getRecord(res.locals.organisation._id))
+      .filter(record => record && record != {});
+    return res.render('index',
+      {
+        title: 'Message to Send',
+        details: req.__(
+          "Hello {{firstName}},<br/>You are already {{recordsCount}} on the Wingzy of {{organisationName}}.<br/>Thank you for revealing your Wings! We all need to be recognized for who we are, what we love, what we know at work. You are already helping a lot.<br/>Now, what about inviting more people of {{organisationName}} to spread their Wings? The more on Wingzy, the more relevant and efficient it becomes...",
+          {
+            firstName: '{{firstName}}',
+            organisationName: res.locals.organisation.name,
+            recordsCount: records.length,
+          }),
+        content: users.map(user => user.loginEmail)
+      }
+    );
   });
 });
+
+router.post('/email/:action?', function(req, res, next) {
+  res.render('emails/monthly_extract', {layout: false, records: records}, function(err, html) {
+    if (req.params.action !== 'send') users = [res.locals.user];
+    users.forEach(user => EmailUser.sendMonthlyEmail(
+      user,
+      res.locals.user,
+      res.locals.organisation,
+      users.length,
+      html,
+      res,
+      function(err, user) {
+        if (err) return next(err);
+        return console.log(`MONTHLY ${res.locals.user.loginEmail} <${res.locals.user._id}> sent the monthly email to ${user.loginEmail} <${user._id}> from ${res.locals.organisation.tag} <${res.locals.organisation._id}>`);
+      }
+    ));
+  });
+});
+
 
 module.exports = router;
