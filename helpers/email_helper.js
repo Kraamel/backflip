@@ -102,6 +102,31 @@ var EmailHelper = {
           console.log(err);
         });
     },
+    emailSpread: function(recipientName, recipientEmail, senderName, senderEmail, organisationName, url, text, res) {
+      const request = mailjet
+        .post("send")
+        .request({
+          "FromEmail": senderEmail || defaultEmitter,
+          "FromName": senderName || defaultEmitterName,
+          "Subject": res.__("Spread your Wingzy", organisationName),
+          "MJ-TemplateID": "519044",
+          "MJ-TemplateLanguage": true,
+          "Recipients": [
+            { "Email": recipientEmail }
+          ],
+          "Vars": {
+            "text": text,
+            "button": res.__("Spread your Wingzy"),
+            "url": url || defaultLink,
+            "outro": res.__("This red button can be used to securely access Wingzy for 30 days.")
+          }
+        });
+      request
+        .then()
+        .catch(err => {
+          console.log(err);
+        });
+    },
     emailMonthly: function(email, name, inviterName, organisationName, userCount, url, extract, res) {
       const request = mailjet
         .post("send")
