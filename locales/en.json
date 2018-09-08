@@ -192,5 +192,8 @@
 	"People who have an email or google account in these domain can join your Wingzy. <a href='mailto:contact@wingzy.io'>Contact us to change them</a>.": "People who have an email or google account in these domain can join your Wingzy. <a href='mailto:contact@wingzy.io'>Contact us to change them</a>.",
 	"fa-clock-o": "fa-clock-o",
 	"Too late!": "Too late!",
-	"The invitation link you used does not work anymore. Please ask for another one.": "The invitation link you used does not work anymore. Please ask for another one."
+	"The invitation link you used does not work anymore. Please ask for another one.": "The invitation link you used does not work anymore. Please ask for another one.",
+	"Invitation Links": "Invitation Links",
+	"Share these links to invite people to join your Wingzy. <a href='mailto:contact@wingzy.io'>Contact us to create a link</a>.": "Share these links to invite people to join your Wingzy. <a href='mailto:contact@wingzy.io'>Contact us to create a link</a>.",
+	"Expires": "Expires"
 }
