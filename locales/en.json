@@ -195,5 +195,6 @@
 	"The invitation link you used does not work anymore. Please ask for another one.": "The invitation link you used does not work anymore. Please ask for another one.",
 	"Invitation Links": "Invitation Links",
 	"Share these links to invite people to join your Wingzy. <a href='mailto:contact@wingzy.io'>Contact us to create a link</a>.": "Share these links to invite people to join your Wingzy. <a href='mailto:contact@wingzy.io'>Contact us to create a link</a>.",
-	"Expires": "Expires"
+	"Expires": "Expires",
+	"Please provide a valid tag.": "Please provide a valid tag."
 }
