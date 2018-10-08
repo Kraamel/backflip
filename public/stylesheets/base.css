@@ -1040,7 +1040,6 @@ a.cloud-element:hover,
   bottom: 0;
   padding-bottom: 0;
   left: 5px;
-  margin-top: 30px;
 }
 
 .profile #cover-button-left,
@@ -1075,6 +1074,7 @@ a.cloud-element:hover,
 
 .profile #contacts-button {
   color: #dd362e;
+  margin-bottom: 40px;
 }
 
 .cloud.cloud-list {
@@ -1867,11 +1867,6 @@ color: #e6e6e6;
 
   .profile h1 {
     font-size: 30px;
-  }
-
-  .profile #delete-button{
-    position: absolute;
-    margin-top: 30px;
   }
 
   .profile .left-panel {
