@@ -3,13 +3,18 @@
     <div class="pure-menu pure-menu-horizontal">
       <ul class="">
         <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-
           {{#if usePremiumFeatures}}
             <a title="{{{__ "Premium"}}}" class="premium-btn">{{{__ "Premium"}}}</a>
             <div class="premium-btn-mobile"></div>
             <ul class="premium-btn-children">
               <li class="premium-btn-children-item" id="copy-emails-feature-action">
                 {{{__ "Send an email to all !"}}}
+              </li>
+              <li class="premium-btn-children-item" id="copy-emails-feature-action">
+                {{{__ "Statistic"}}}
+              </li>
+              <li class="premium-btn-children-item" id="copy-emails-feature-action">
+                {{{__ "Import/Export"}}}
               </li>
             </ul>
           {{else}}
@@ -20,7 +25,6 @@
               </li>
             </ul>
           {{/if}}
-
         </li>
       </ul>
     </div>
@@ -28,7 +32,9 @@
 
   {{#if usePremiumFeatures}}
   <!-- mobile display FAP -->
-    <nav class="premium-mobile"  >   
+    <nav class="premium-mobile"  >
+      <a class="buttons" id="copy-stastistic-feature-action" tooltip="{{{__ "Statistic"}}}"><i class="fa fa-bar-chart"></i></a>
+      <a class="buttons" id="copy-import-feature-action" tooltip="{{{__ "Import/Export"}}}"><i class="fa fa-upload"></i></a>
       <a class="buttons" id="copy-emails-feature-action" tooltip="{{{__ "Send an email to all !"}}}"><i class="fa fa-envelope"></i></a>
       <a class="buttons"></a>
     </nav>

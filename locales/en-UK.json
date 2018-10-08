@@ -221,5 +221,7 @@
 	"{{email}} does not seem right, could you try again please?": "{{email}} does not seem right, could you try again please?",
 	"Make featured wings family": "Make featured wings family",
 	"Remove from featured wings family": "Remove from featured wings family",
-	"Do you really want to delete this awesome profile ?": "Do you really want to delete this awesome profile ?"
+	"Do you really want to delete this awesome profile ?": "Do you really want to delete this awesome profile ?",
+	"Statistic": "Statistic",
+	"Import/Export": "Import/Export"
 }

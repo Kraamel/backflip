@@ -71,21 +71,23 @@
     background-color: #E6BE00;
   }
 
-  /* For more premium features ...
+ /*For more premium features ...*/
   .buttons:not(:last-child):nth-last-child(3) {
     -webkit-transition-delay: 75ms;
             transition-delay: 40ms;
-    background-image: url('');
-    background-size: contain;
+     text-align: center;
+     line-height: 40px;
+     background-color: #E6BE00;
   }
   
   .buttons:not(:last-child):nth-last-child(4) {
     -webkit-transition-delay: 100ms;
             transition-delay: 60ms;
-    background-image: url('');
-    background-size: contain;
+      text-align: center;
+      line-height: 40px;
+      background-color: #E6BE00;
   }
-  */
+
   
   /* Show tooltip content on hover */
   [tooltip]:before {
@@ -214,7 +216,6 @@
         background:white;
         font-weight: 600;
         cursor: pointer;
-        position: relative;
         padding: 15px 30px;
         color:#E6BE00;
         font-size:20px;
