@@ -5,3 +5,11 @@
 {{/errors}}
 </ul>
 {{/if}}
+
+{{#if warning}}
+    <ul class="errors">
+        {{#warning}}
+            <li><i class="fa fa-globe" aria-hidden="true"></i> {{msg}}</li>
+        {{/warning}}
+    </ul>
+{{/if}}

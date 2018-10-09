@@ -199,6 +199,14 @@ router.use('intro', function(req, res, next){
   });
 });
 
+// Warning for public organisation
+router.use(function(req, res, next){
+  if(res.locals.organisation.public){
+    res.locals.warning = [{msg: req.__("This is a public Wingzy, your info will be publicly available on internet")}];
+  }
+  return next();
+});
+
 router.use(function(req, res, next) {
   res.locals.onboard.returnUrl = UrlHelper.makeUrl(req.organisationTag, `profile/${res.locals.record.tag}`, null, req.getLocale());
   next();
