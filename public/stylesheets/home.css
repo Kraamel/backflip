@@ -349,104 +349,6 @@ img.wingzy-full {
     text-decoration: none;
 }
 
-/**  PRICING **/
-.pricing .main img {
-    margin: auto;
-}
-
-.tarif-box {
-    display: flex;
-    justify-content: space-around;
-    margin: 10vh auto 5vh auto;
-}
-
-.pricing-box {
-    position: relative;
-    margin-bottom: 60px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    margin-left: 3vw;
-    margin-right: 3vw;
-    display: inline-block;
-}
-
-.pricing .price {
-    margin-left: 10px;
-    max-width: 95%;
-    min-height: 100%;
-}
-
-.pricing-button {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    position: absolute;
-    margin-top: -40px;
-    max-width: 60%;
-    margin-left: 20%;
-}
-
-.pricing-box:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
-}
-
-.pricing-button:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
-}
-
-.free {
-    background-color: #98C4CA;
-}
-
-.premium {
-    background-image: linear-gradient(to top right, #DAA520, #E9C261);
-}
-
-.pricing.home h1 {
-    text-transform: uppercase;
-}
-
-.pricing.home h2 {
-    color: white;
-    font-size: 50px;
-    font-weight: 600;
-    text-align: center;
-    border-radius: 30px 30px 0 0;
-    margin-bottom: -15px;
-    text-transform: uppercase;
-}
-
-.pricing.home h2:first-child {
-    font-size: 30px;
-    font-weight: 400;
-}
-
-.pricing.home h3 {
-    color: white;
-    font-size: 10px;
-    text-transform: uppercase;
-    font-weight: 400;
-    text-align: center;
-    padding-bottom: 50px;
-}
-
-.pricing.home h3:last-child {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    margin: 0 0 0 -50%;
-    left: 50%;
-    padding-top: 10px;
-}
-
-.pricing .price p {
-    color: white;
-    margin-top: -40px;
-    text-align: justify;
-    padding-left: 4vw;
-    padding-right: 4vw;
-    padding-bottom: 60px;
-    bottom: 10px;
-}
-
 @media screen and (min-width: 639px) {
     .home .epic .epic-placeholder {
         min-height: 45vw;
@@ -510,27 +412,6 @@ img.wingzy-full {
 
     .soutien-container .soutien-author h4 {
         font-size: 0.4em;
-    }
-
-    /* PRICING */
-    .pricing-box {
-        max-width: 30vw;
-        margin: 1vw;
-    }
-
-    .pricing .price p {
-        font-size: 15px;
-        text-align: left;
-        padding-left: 1vw;
-    }
-
-    .pricing.home h3 {
-        font-size: 10px;
-        margin-bottom: 20px;
-    }
-
-    .pricing.home h3:last-child {
-        font-size: 8px;
     }
 }
 
@@ -627,28 +508,4 @@ img.wingzy-full {
     .black {
         color: black !important;
     }
-
-    /* PRICING */
-    .pricing-box {
-        max-width: 15vw;
-    }
-
-    .pricing .price p {
-        font-size: 20px;
-        text-align: left;
-        padding-bottom: 3vh;
-        margin-bottom: 2.5vh;
-        padding-left: 1vw;
-        padding-right: 1vw;
-    }
-
-    .pricing.home h3 {
-        font-size: 15px;
-        margin-bottom: 30px;
-    }
-
-    .pricing.home h3:last-child {
-        font-size: 15px;
-    }
-
 }
