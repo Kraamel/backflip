@@ -15,10 +15,22 @@
 
         <div class="pure-u-1 pure-u-md-2-5">
             <div class="pure-u-1">
-                <div class="pure-g-box" id="search-growth">
-                    <h2> <i class="fa fa-line-chart" aria-hidden="true"></i> {{{__ "Growth of the number of searches"}}}</h2>
-                    <h3>{{{__ "Growth of the number of searches in your Wingzy"}}}</h3>
-                    <p class="medium-text black">{{{__ "Coming soon..."}}}</p>
+                <div class="pure-u-1-2">
+                    <div class="pure-g-box" id="view-count">
+                        <h2> <i class="fa fa-eye" aria-hidden="true"></i> {{{__ "Number of views"}}}</h2>
+                        <h3>{{{__ "Number of views within the last 30 days"}}}</h3>
+                        <p class="big-text">{{{viewCountLast30Days}}}</p>
+                    </div>
+                </div><!--
+
+                --><div class="pure-u-1-2">
+                    <div class="pure-g-box" id="search-count">
+                        <h2> <i class="fa fa-search" aria-hidden="true"></i> {{{__ "Number of searches"}}}</h2>
+                        <h3>{{{__ "Number of searches within the last 30 days"}}}</h3>
+                        <p class="big-text">
+                            {{{searchCountLast30Days}}}
+                        </p>
+                    </div>
                 </div>
             </div>
 

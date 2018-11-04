@@ -4,6 +4,9 @@ var Organisation = require('../models/organisation.js');
 let SearchLog = require('../models/search_log');
 let User = require('../models/user');
 
+let currentDate = new Date();
+let dateOneMonthAgo  = currentDate.setMonth(currentDate.getMonth()-1);
+
 /**
  * @description Populate top 10 searched Wings of the Wingzy
  */
@@ -31,6 +34,7 @@ router.use('/', function(req, res, next){
 
         let topWings = [];
         let BreakException = {};
+        let numberOfViewsAllTime = arrayOfSearchLog.filter(searchLog => searchLog.tags.length === 0 && !searchLog.query);
 
         try {
             ordered.forEach((value, index)=>{
@@ -43,8 +47,11 @@ router.use('/', function(req, res, next){
         } catch (e) {
             if (e !== BreakException) throw e;
         }
+
+        res.locals.viewCountLast30Days = getNumberOfViewsLast30Days(arrayOfSearchLog);
         res.locals.topWings = topWings;
-        res.locals.searchCount = arrayOfSearchLog.length;
+        res.locals.searchCountLast30Days = getNumberOfSearchesLast30Days(arrayOfSearchLog);
+        res.locals.searchCount = Math.max(arrayOfSearchLog.length - numberOfViewsAllTime.length, 0);
         res.locals.searchTimeSaved = timeConvert(res.locals.searchCount*10, req); // suppose you earn 10 minutes by searchs ...
         return next();
     }).catch(error=>{
@@ -69,10 +76,8 @@ router.use('/', function(req, res, next){
  * @description Get number of users actifs
  */
 router.use('/', function(req, res, next){
-    let currentDate = new Date();
-    var minDateForUserActif  = currentDate.setMonth(currentDate.getMonth()-1);
     User.find({'orgsAndRecords.organisation': res.locals.organisation._id,
-                'last_action' : { $gte: minDateForUserActif}})
+                'last_action' : { $gte: dateOneMonthAgo}})
     .then((users)=>{
         res.locals.usersActifsCount = users.length;
         res.locale.usersActifs = users;
@@ -113,6 +118,19 @@ let timeConvert = function(time, req) {
                 {days: days, hours: hours, minutes: minutes});
 }
 
+let getNumberOfViewsLast30Days = function(arrayOfSearchLog) {
+    let viewCountThisMonth = arrayOfSearchLog.filter(searchLog => searchLog.tags.length === 0 
+                                                    && !searchLog.query 
+                                                    && searchLog.created.getTime() > dateOneMonthAgo);
 
+    return viewCountThisMonth.length;
+}
+
+let getNumberOfSearchesLast30Days = function(arrayOfSearchLog) {
+    let searchCountThisMonth = arrayOfSearchLog.filter(searchLog => (searchLog.tags.length > 0 || searchLog.query)
+                                                        && searchLog.created.getTime() > dateOneMonthAgo);
+    
+    return searchCountThisMonth.length;
+}
 
 module.exports = router;

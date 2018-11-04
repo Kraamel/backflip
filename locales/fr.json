@@ -247,7 +247,6 @@
 	"Discover the Wings of %s !": "Découvrez les Wings de %s",
 	"Hello %s,<br/> You have invited %s to join %s on Wingzy.<br/> %s has accepted your invitation !<br/> Thank you for spreading your Wings.": "Bonjour %s,<br/>Vous avez invité %s à rejoindre %s sur Wingzy.<br/> %s vient d'accepter votre invitation et à déployé ses ailes sur Wingzy grâce à vous. Bravo !",
 	"See his profile": "Découvrez son profil",
-	"You are on a free Wingzy, you can only do %s of 1000 searches per month. To upgrade to premium, <a href='mailto:premium@wingzy.io'>contact&nbsp;us</a> !": "Votre Wingzy est gratuit et le restera toujours jusqu'à %s sur 1000 recherches ce mois. Contactez-nous pour <a href='mailto:premium@wingzy.io'>passer&nbsp;Premium</a>&nbsp;!",
 	"Time saved with Wingzy": "Temps gagné avec Wingzy",
 	"Active users": "Utilisateurs actifs",
 	"Coming soon...": "Bientôt disponible...",
@@ -261,6 +260,5 @@
 	"Growth of the number of searches": "Evolution du nombre de recherches",
 	"Growth of the number of active users": "Evolution du nombre d'utilisateurs actifs",
 	"An idea ?": "Une idée ?",
-	"Idea for the statistics dashboard": "Idea for the statistics dashboard",
 	"You are on a free Wingzy, you can only do %s of 1000 searches per month. To upgrade to premium, <a href='mailto:premium@wingzy.io'>contact&nbsp;us</a> !": "Votre Wingzy est gratuit et le restera toujours jusqu'à %s sur 1000 recherches ce mois. Contactez-nous pour <a href='mailto:premium@wingzy.io'>passer&nbsp;Premium</a>&nbsp;!"
 }
