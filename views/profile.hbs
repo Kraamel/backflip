@@ -9,12 +9,14 @@
             <img src="{{pictureUrl record.picture record.type}}" alt="">
           </div>
         {{/if}}
+        {{#if canEdit}}
         <h1>
           {{{record.name}}}
-          <a class="edit-button" href="{{editUrl record._id organisation.tag}}" class="pure-button scale back-button" title="{{{__ 'Edit profile'}}}"><img src="/plume.png"/></a>
+          <a class="edit-button pure-button scale back-button" href="{{editUrl record._id organisation.tag}}" title="{{{__ 'Edit profile'}}}"><img src="/plume.png" alt="edit_img"/></a>
         </h1>
+        {{/if}}
         {{#if record.intro}}
-        <p id="intro">{{{record.intro}}}</p>
+          <p id="intro">{{{record.intro}}}</p>
         {{/if}}
         {{#if canEdit}}
         <p id="edit-buttons">
@@ -41,12 +43,12 @@
       </div>
       <div class="grid-box cloud-list links">
         {{#record.links}}
-        {{> link}}
+          {{> link}}
         {{/record.links}}
         {{#if canEdit}}
-        <a id="contacts-button" href="{{editUrl record._id organisation.tag 'links'}}" class="cloud-element link">
-          <i class="fa fa-plus" aria-hidden="true"></i><span>{{__ "Add"}}</span>
-        </a>
+          <a id="contacts-button" href="{{editUrl record._id organisation.tag 'links'}}" class="cloud-element link">
+            <i class="fa fa-plus" aria-hidden="true"></i><span>{{__ "Add"}}</span>
+          </a>
         {{/if}}
         {{#if canDelete}}
            <a  onclick="delete_alert()" id="delete-button" href="{{deleteUrl record._id organisation.tag}}" class="pure-button back-button">{{{__ "Delete profile"}}}</a>
@@ -57,7 +59,7 @@
       <div class="grid-box">
         <ul>
           {{#record.allHashtags}}
-          {{> hashtag}}
+            {{> hashtag}}
           {{/record.allHashtags}}
           {{#if canEdit}}
             <a id="hashtags-button" href="{{editUrl record._id organisation.tag 'hashtags'}}" class="pure-button scale cloud-element hashtag"><span>{{__ "Add Wings"}}</span></a>
@@ -66,16 +68,18 @@
       </div>
       <div class="pure-u-1 pure-u-xl-2-3">
         <div class="grid-box about-box">
-          <h2>
-            {{#if editAboutUrl}}
-                <span>{{__ "About me"}}</span><a class="edit-button" href="{{editAboutUrl}}" class="pure-button scale back-button" title="{{{__ 'Edit about me'}}}"><img src="/plume.png"/></a>
-            {{/if}}
-          </h2>
-            {{#if record.description}}
-                <p id="description">{{{nl2br record.description}}}</p>
-            {{else}}
-                <p id="about_placehoolder">{{{__ "Who am I ..."}}}</p>
-            {{/if}}
+          {{#if canEdit}}
+            <h2>
+              {{#if editAboutUrl}}
+                <span>{{__ "About me"}}</span><a class="edit-button pure-button scale back-button" href="{{editAboutUrl}}" title="{{{__ 'Edit about me'}}}"><img src="/plume.png" alt="edit_img"/></a>
+              {{/if}}
+            </h2>
+          {{/if}}
+          {{#if record.description}}
+            <p id="description">{{{nl2br record.description}}}</p>
+          {{else}}
+            <p id="about_placehoolder">{{{__ "Who am I ..."}}}</p>
+          {{/if}}
         </div>
       </div>
     </div>
@@ -84,9 +88,9 @@
 {{> jquery}}
 <script>
   $('.emoji-box').html(
-    function() {
-      return twemoji.parse($(this).text().trim(), {ext: '.svg', folder: 'svg',});
-    }
+      function () {
+        return twemoji.parse($(this).text().trim(), {ext: '.svg', folder: 'svg',});
+      }
   );
   var delete_alert = function () {
     window.alert("{{{__ "Do you really want to delete this awesome profile ?"}}}")
