@@ -55,7 +55,8 @@
 	"Email": "Email",
 	"Name": "Name",
 	"What do you do at %s?": "What do you do at %s?",
-	"Choose your first wings": "Choose your first wings",
+	"Choose your first wings": "Choose your first wings", git push --set-upstream origin edit_button
+
 	"Back": "Back",
 	"Save": "Save",
 	"Edit profile": "Edit profile",

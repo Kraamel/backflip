@@ -2,6 +2,11 @@
 @font-face {
   font-family: 'Paper Daisy';
   src: url('fonts/Paper-Daisy-Font/PaperDaisy.ttf'); /* IE9 Compat Modes */
+  src: url('fonts/Paper-Daisy-Font/PaperDaisy.eot') format('eot'),
+        url('fonts/Paper-Daisy-Font/PaperDaisy.otf') format('otf'),
+        url('fonts/Paper-Daisy-Font/PaperDaisy.svg') format('svg'),
+        url('fonts/Paper-Daisy-Font/PaperDaisy.woff') format('woff'),
+        url('fonts/Paper-Daisy-Font/PaperDaisy.woff2') format('woff2');
 }
 
 html, button, input, select, textarea, .pure-g,

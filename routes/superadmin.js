@@ -9,7 +9,7 @@ var Organisation = require('../models/organisation.js');
 var User = require('../models/user.js');
 var Record = require('../models/record.js');
 var EmailUser = require('../models/email/email_user.js');
-
+let SearchLog = require('../models/search_log');
 var UrlHelper = require('../helpers/url_helper.js');
 
 router.get('/depersonate', function(req, res, next) {
@@ -422,6 +422,45 @@ router.get('/repareEmails', function(req, res, next){
       content: error
     });
   })
+});
+
+/**
+ * @description Find users actives by organisation tag
+ * @param {orgTag} String
+ */
+router.use('/statistics/activeUsers/:orgTag', function(req, res, next){
+  if(res.locals.user && res.locals.user.isSuperAdmin() && req.params.orgTag){
+      Organisation.findOne({tag: req.params.orgTag})
+      .then( organisationSearched => {
+          SearchLog.aggregate(
+            [
+              { $match: {organisation: organisationSearched._id}},
+              { $group: {_id: '$user', countInteractions: {$sum: 1}}},
+              { $sort:{"countInteractions":-1}}
+            ]
+          ).then(searchLogsByUser => {
+            User.populate(searchLogsByUser, {path: '_id'}).then(searchLogsByUserPopulated => {
+              res.render('index',
+              {
+                  title: 'List of the active Users of the organisation : ' + req.params.orgTag,
+                  details: 'This is an array of users sorted by interactions number in the organisation. \r\n The counter is called : countInteractions',
+                  content: searchLogsByUserPopulated
+              });
+            }).catch(error => {return next(error);});
+          }).catch(error => {return next(error);});
+      }).catch(error => {return next(error);});
+  }else{
+      let error;
+      if(req.params.orgTag){
+          error = new Error('Missing parameter : /activeUsers/:orgTag');
+          error.status = 400;
+      } 
+      else {
+          error = new Error('You are not allowed to use this feature');
+          error.status = 403;
+      }
+      return next(error);
+  }
 });
 
 module.exports = router;
