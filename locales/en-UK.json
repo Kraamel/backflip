@@ -55,8 +55,7 @@
 	"Email": "Email",
 	"Name": "Name",
 	"What do you do at %s?": "What do you do at %s?",
-	"Choose your first wings": "Choose your first wings", git push --set-upstream origin edit_button
-
+	"Choose your first wings": "Choose your first wings",
 	"Back": "Back",
 	"Save": "Save",
 	"Edit profile": "Edit profile",
@@ -274,5 +273,6 @@
 	"<p>&#10003;Unlimited coworkers</p><p>&#10003;Unlimited Wings</p><p>&#10003;Up to 1000 searches per month</p>": "<p>&#10003;Unlimited coworkers</p><p>&#10003;Unlimited Wings</p><p>&#10003;Up to 1000 searches per month</p>",
 	"<p>&#10003;Unlimited coworkers</p><p>&#10003;Unlimited Wings</p><p>&#10003;Unlimited searches</p><p>&#10003;Targeted email sending</p><p>&#10003;Include statistics</p>": "<p>&#10003;Unlimited coworkers</p><p>&#10003;Unlimited Wings</p><p>&#10003;Unlimited searches</p><p>&#10003;Targeted email sending</p><p>&#10003;Include statistics</p>",
 	"10€": "10€",
-	"<p>&#10003;Tailor-made service</p><p>&#10003;Integrated with your tools</p><p>&#10003;Detailed quote</p>": "<p>&#10003;Tailor-made service</p><p>&#10003;Integrated with your tools</p><p>&#10003;Detailed quote</p>"
+	"<p>&#10003;Tailor-made service</p><p>&#10003;Integrated with your tools</p><p>&#10003;Detailed quote</p>": "<p>&#10003;Tailor-made service</p><p>&#10003;Integrated with your tools</p><p>&#10003;Detailed quote</p>",
+	"HT": "HT"
 }

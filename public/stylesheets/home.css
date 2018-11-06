@@ -108,8 +108,7 @@
 }
 
 .home .home-page .pitch {
-    width: 80vw; git push --set-upstream origin edit_button
-
+    width: 80vw;
     max-width: 854px;
     text-align: center;
     font-weight: 500;
@@ -198,8 +197,7 @@ img.wingzy-full {
     z-index: 1;
 }
 
-.home .coffee { git push --set-upstream origin edit_button
-
+.home .coffee {
     position: absolute;
     bottom: -68px;
     right: 0;
