@@ -12,7 +12,7 @@
         {{#if canEdit}}
         <h1>
           {{{record.name}}}
-          <a class="edit-button pure-button scale back-button" href="{{editUrl record._id organisation.tag}}" title="{{{__ 'Edit profile'}}}"><img src="/plume.png" alt="edit_img"/></a>
+          <a class="edit-button scale back-button" href="{{editUrl record._id organisation.tag}}" title="{{{__ 'Edit profile'}}}"><img src="/plume.png" alt="edit_img"/></a>
         </h1>
         {{/if}}
         {{#if record.intro}}
@@ -71,7 +71,7 @@
           {{#if canEdit}}
             <h2>
               {{#if editAboutUrl}}
-                <span>{{__ "About me"}}</span><a class="edit-button pure-button scale back-button" href="{{editAboutUrl}}" title="{{{__ 'Edit about me'}}}"><img src="/plume.png" alt="edit_img"/></a>
+                <span>{{__ "About me"}}</span><a class="edit-button scale back-button" href="{{editAboutUrl}}" title="{{{__ 'Edit about me'}}}"><img src="/plume.png" alt="edit_img"/></a>
               {{/if}}
             </h2>
           {{/if}}
