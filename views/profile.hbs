@@ -9,12 +9,12 @@
             <img src="{{pictureUrl record.picture record.type}}" alt="">
           </div>
         {{/if}}
-        {{#if canEdit}}
         <h1>
           {{{record.name}}}
-          <a class="edit-button pure-button scale back-button" href="{{editUrl record._id organisation.tag}}" title="{{{__ 'Edit profile'}}}"><img src="/plume.png" alt="edit_img"/></a>
+          {{#if canEdit}}
+            <a class="edit-button scale back-button" href="{{editUrl record._id organisation.tag}}" title="{{{__ 'Edit profile'}}}"><img src="/plume.png" alt="edit_img"/></a>
+          {{/if}}
         </h1>
-        {{/if}}
         {{#if record.intro}}
           <p id="intro">{{{record.intro}}}</p>
         {{/if}}
@@ -64,6 +64,9 @@
           {{#if canEdit}}
             <a id="hashtags-button" href="{{editUrl record._id organisation.tag 'hashtags'}}" class="pure-button scale cloud-element hashtag"><span>{{__ "Add Wings"}}</span></a>
           {{/if}}
+          {{#if canProposeWings}}
+            <a id="hashtags-button" href="{{proposeWingsUrl record._id organisation.tag}}" class="pure-button scale cloud-element hashtag"><span>{{__ "Propose Wings"}}</span></a>
+          {{/if}}
         </ul>
       </div>
       <div class="pure-u-1 pure-u-xl-2-3">
@@ -71,7 +74,7 @@
           {{#if canEdit}}
             <h2>
               {{#if editAboutUrl}}
-                <span>{{__ "About me"}}</span><a class="edit-button pure-button scale back-button" href="{{editAboutUrl}}" title="{{{__ 'Edit about me'}}}"><img src="/plume.png" alt="edit_img"/></a>
+                <span>{{__ "About me"}}</span><a class="edit-button scale back-button" href="{{editAboutUrl}}" title="{{{__ 'Edit about me'}}}"><img src="/plume.png" alt="edit_img"/></a>
               {{/if}}
             </h2>
           {{/if}}
