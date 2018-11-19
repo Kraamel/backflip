@@ -5,12 +5,12 @@
       <div class="pure-u-1">
         <div class="grid-box">
           {{> form_errors}}
-          <label for="wings">{{__ "What do you love? What do you know?"}}</label>
+          <label for="wings">{{{onboard.hashtagsIntro}}}</label>
         </div>
         <div id="search" class="search-input-box grid-box pure-form">
           <input id="wings" name="hashtags" type="text" placeholder="{{__ 'Type Wings here'}}" value="{{hashtagsAsString}}">
         </div>
-        <p class="cloud-howto">{{__ "Drag and drop to reorder. The first three will be displayed in search results."}}</p>
+        <p class="cloud-howto">{{{onboard.hashtagsOutro}}}</p>
       </div>
     </div>
     <div class="pure-g">
@@ -30,7 +30,7 @@
         </div>
         <div class="pure-u-1-2 pure-u-md-2-3">
           <div class="grid-box">
-            <button type="submit" class="pure-button scale">{{{__ "Save"}}}</button>
+            <button type="submit" class="pure-button scale">{{{onboard.hashtagsActionLabel}}}</button>
           </div>
         </div>
       </div>
@@ -43,7 +43,10 @@
 </div>
 <script type="text/template" id="hashtags-template">
   {{{{raw}}}}
-    <div href="" class="cloud-element hashtag" data-tag="{{tag}}" data-name="{{name}}" data-picture-path="{{picture.path}}" data-picture-emoji="{{picture.emoji}}">
+    <div href="" class="cloud-element hashtag {{proposedClass}}"  data-tag="{{tag}}" 
+                                                data-name="{{name}}" 
+                                                data-picture-path="{{picture.path}}" 
+                                                data-picture-emoji="{{picture.emoji}}">
       {{{pictureHtml}}}
       <span>{{{name}}}</span>
     </div>
@@ -52,7 +55,7 @@
 <script>
   var algoliaPublicKey = {{{json algoliaPublicKey}}};
   var isProduction = {{{json isProduction}}};
-  var hashtagsForBank = {{{json record.hashtags}}}
+  var hashtagsForBank = {{{json hashtags}}};
   var newHashtagSentence = '{{__ "Create new hashtag"}}';
 </script>
 {{>jquery}}

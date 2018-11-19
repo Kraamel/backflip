@@ -64,7 +64,7 @@ router.post('/login', function(req, res, next) {
       }
 
       if (organisation && !user.belongsToOrganisation(organisation._id)) {
-       organisation = null;
+        organisation = null;
       }
 
       EmailUser.sendLoginEmail(user, organisation, res, function(err, user) {

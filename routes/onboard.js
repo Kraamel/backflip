@@ -14,6 +14,7 @@ var UrlHelper = require('../helpers/url_helper.js');
 var LinkHelper = require('../helpers/link_helper.js');
 var ErrorsMonitoringHelper = require('../helpers/errors_monitoring_helper');
 let EmailHelper = require('../helpers/email_helper');
+let EmailUser = require('../models/email/email_user');
 let User = require('../models/user');
 
 router.use(function(req, res, next) {
@@ -27,10 +28,35 @@ router.use(function(req, res, next) {
     welcomeAction: new UrlHelper(req.organisationTag, 'onboard/welcome', query, req.getLocale()).getUrl(),
     introAction: new UrlHelper(req.organisationTag, 'onboard/intro', query, req.getLocale()).getUrl(),
     hashtagsAction: new UrlHelper(req.organisationTag, 'onboard/hashtags', query, req.getLocale()).getUrl(),
+    hashtagsActionLabel: req.__("Save"),
     linksAction: new UrlHelper(req.organisationTag, 'onboard/links', query, req.getLocale()).getUrl(),
-    organisationUrl: new UrlHelper(res.locals.organisation.tag, null, null, req.getLocale()).getUrl()
+    organisationUrl: new UrlHelper(res.locals.organisation.tag, null, null, req.getLocale()).getUrl(),
+    hashtagsIntro: req.__("What do you love? What do you know?"),
+    hashtagsOutro: req.__("Drag and drop to reorder. The first three will be displayed in search results.")
   };
-  return next();
+
+  // Wings propositions
+  if(req.query.proposeToId){
+    Record.findOne({'_id': req.query.proposeToId})
+    .then(proposeToRecord => {
+      res.locals.onboard.hashtagsAction = new UrlHelper(req.organisationTag, 'onboard/hashtags', '?proposeToId='+req.query.proposeToId, req.getLocale()).getUrl();
+      res.locals.onboard.hashtagsActionLabel = req.__("Propose these Wings");
+      res.locals.onboard.introAction = res.locals.onboard.organisationUrl;
+      res.locals.onboard.hashtagsIntro = req.__("You think that {{recipientName}} has other Wings ? Tell him !",
+                                                  {recipientName: proposeToRecord.name});
+      res.locals.onboard.hashtagsOutro = req.__("An email will be send to {{recipientName}} to propose these Wings.",
+                                                  {recipientName: proposeToRecord.name});
+      return next();
+    });
+  // Wings propositions management  
+  }else if (req.query.proposedWings && req.query.proposerRecordId) {
+    res.locals.onboard.hashtagsAction = new UrlHelper(req.organisationTag, 'onboard/hashtags', '?proposedWings='+req.query.proposedWings+'&proposerRecordId='+req.query.proposerRecordId, req.getLocale()).getUrl();
+    res.locals.onboard.hashtagsActionLabel = req.__("Save");
+    res.locals.onboard.introAction = res.locals.onboard.organisationUrl;
+    return next();
+  }else{
+    return next();
+  }
 });
 
 // First we check there is an organisation.
@@ -381,16 +407,40 @@ router.post('/hashtags',
 );
 
 router.post('/hashtags', function(req, res, next) {
+  if(req.query.proposeToId) return next();
   var hashtagsArray = req.body.hashtags.split(',');
   hashtagsArray = hashtagsArray.filter(tag => tag.length > 1);
   res.locals.record.makeHashtags(hashtagsArray, res.locals.organisation._id, function(err, records) {
     if (err) return next(err);
     res.locals.record.save(function(err, record) {
       if (err) return next(err);
+      if(req.query.proposedWings && req.query.proposerRecordId){
+        let proposedWingsAccepted = hashtagsArray.diff(req.query.proposedWings.split(',').map(entry => '#'+entry));
+        if(proposedWingsAccepted.length > 0){
+          sendWingsPropositionThanks(req.query.proposerRecordId, proposedWingsAccepted, req.getLocale(), res);
+        }
+      }
       if (req.query.first) return res.redirect(res.locals.onboard.linksAction);
       else return res.redirect(res.locals.onboard.returnUrl);
     });
   });
+});
+
+/**
+ * @description When user propose Wings to someone
+ */
+router.post('/hashtags', function(req, res, next){
+  if(!req.query.proposeToId) return next();
+  res.locals.hashtags = res.locals.record.hashtags;
+  if(req.body.hashtags.length === 0) return res.render('onboard/hashtags', {errors: [{msg: req.__('You should propose at least one Wings')}],
+                                                                            bodyClass: 'onboard'});
+
+  req.body.hashtags = req.body.hashtags.split('#').join('');
+  let hashtagsArray = req.body.hashtags.split(',').filter(tag => tag.length > 1);
+  sendWingsProposition(req.query.proposeToId, hashtagsArray, req.getLocale(), res)
+  .then((recordTagRedirect) => {
+    return res.redirect(new UrlHelper(req.organisationTag, 'profile/'+recordTagRedirect, null, req.getLocale()).getUrl());
+  })
 });
 
 //@todo should be in sanitizer
@@ -449,10 +499,33 @@ router.all('/intro', function(req, res, next) {
 router.all('/hashtags', function(req, res, next) {
   res.locals.onboard.step = "hashtags";
   res.locals.onboard.hashtags = true;
-  res.locals.hashtagsAsString = req.body.hashtags || res.locals.record.hashtags.reduce((string, hashtag) => string + ',' + hashtag.tag, '').substring(1);
-  res.render('onboard/hashtags', {
-    bodyClass: 'onboard onboard-hashtags'
-  });
+
+  // if we want propose Wings, we should not populate hashtags list
+  if(!req.query.proposeToId)
+    res.locals.hashtagsAsString = req.body.hashtags || res.locals.record.hashtags.reduce((string, hashtag) => string + ',' + hashtag.tag, '').substring(1);
+
+  // hashtags proposition management
+  if(req.query.proposedWings && req.query.proposerRecordId){
+    res.locals.hashtagsPropositionAsString = '#'+req.query.proposedWings.split(',').join(',#');
+    res.locals.hashtagsAsString += (res.locals.hashtagsAsString.length === 0 ? '' : ',') +res.locals.hashtagsPropositionAsString;
+    Record.findOne({'_id': req.query.proposerRecordId})
+    .then((proposerRecord)=> {
+      res.locals.info = [{msg : req.__("{{proposerName}} has proposed to you the <br/><span class='golden-wings'>golden Wings</span> below. You are free to reorder, remove or accept them.",
+                                {proposerName: proposerRecord.name})}];
+      Record.find({'tag': {$in : res.locals.hashtagsAsString.split(',')}})
+      .then((records) => {
+        res.locals.hashtags = records;
+        res.render('onboard/hashtags', {
+          bodyClass: 'onboard onboard-hashtags'
+        });
+      }).catch(error => {return next(error);});
+    }).catch(error => {return next(error);});
+  }else{
+    res.locals.hashtags = res.locals.record.hashtags;
+    res.render('onboard/hashtags', {
+      bodyClass: 'onboard onboard-hashtags'
+    });
+  }
 });
 
 router.all('/links', function(req, res, next) {
@@ -478,6 +551,87 @@ let notifyInvitationAccepter = function(res){
       });
     });
   }  
+};
+
+let sendWingsProposition = function(proposeToId, hashtagsArray, locale, res) {
+  return Record.findOne({'_id': proposeToId})
+  .then(proposeToRecord => {
+    return User.findOne({'orgsAndRecords' : {$elemMatch: {record: proposeToRecord._id}} })
+    .then(proposeToUser => {
+      let redirectPage = 'onboard/hashtags';
+      let queryToSend = '&proposedWings='+hashtagsArray.join(',')+'&proposerRecordId='+res.locals.record._id+'&redirectTo='+redirectPage;
+
+      // need email to login + token + hash with redirection to onboard hashtags
+      checkEmailLoginAvailable(proposeToUser)
+      .then(userUpdated => {
+        let loginUrl = EmailUser.getLoginUrl(userUpdated, res.locals.organisation, locale);
+        let loginUrlWithRedirection = loginUrl + queryToSend;
+    
+        EmailHelper.public.emailProposeWings(
+            proposeToRecord.name,
+            userUpdated.loginEmail,
+            res.locals.record.name,
+            hashtagsArray,
+            res.locals.organisation.name,
+            loginUrlWithRedirection,
+            res
+        );
+      });
+      return proposeToRecord.tag;
+    }); 
+  });
+};
+
+let sendWingsPropositionThanks = function(proposerRecordId, proposedWingsAccepted, locale, res) {
+  Record.findOne({'_id' : proposerRecordId})
+  .then(proposerRecord => {
+    User.findOne({'orgsAndRecords' : {$elemMatch: {record: proposerRecord._id}} })
+    .then(proposeToUser => {
+      checkEmailLoginAvailable(proposeToUser)
+      .then(userUpdated => {
+        let loginUrl = EmailUser.getLoginUrl(userUpdated, res.locals.organisation, locale);
+        let redirectTo = '&redirectTo=profile/'+res.locals.record.tag;
+        let loginUrlWithRedirection = loginUrl + redirectTo;
+  
+        EmailHelper.public.emailThanksForProposedWings(
+          proposerRecord.name,
+          userUpdated.loginEmail,
+          res.locals.record.name,
+          proposedWingsAccepted,
+          res.locals.organisation.name,
+          loginUrlWithRedirection,
+          res
+        );
+      });
+    });
+  });
 }
+
+/**
+ * @description Check if user has needed data to recieve a login email
+ */
+let checkEmailLoginAvailable = async function(user) {
+  if(!user.email || JSON.stringify(user.email) === JSON.stringify({})) {
+    return await EmailUser.makeEmailFromGoogle(user, function(err, userUpdated) {
+      if (err) return null;
+      return userUpdated;
+    });
+  }else{
+    return user;
+  }
+}
+
+/**
+ * @description Find all duplicate values and return them
+ */
+Array.prototype.diff = function(arr2) {
+  var ret = [];
+  for(var i in this) {   
+      if(arr2.indexOf(this[i]) > -1){
+          ret.push(this[i]);
+      }
+  }
+  return ret;
+};
 
 module.exports = router;

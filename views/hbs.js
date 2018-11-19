@@ -301,6 +301,10 @@ hbs.registerHelper('editUrl', function(recordId, organisationTag, step) {
   return new UrlHelper(organisationTag, page, query, this.getLocale()).getUrl();
 });
 
+hbs.registerHelper('proposeWingsUrl', function(proposeToId, organisationTag){
+  return new UrlHelper(organisationTag, 'onboard/hashtags', '?proposeToId='+proposeToId, this.getLocale()).getUrl();
+});
+
 hbs.registerHelper('banUrl', function(userId, organisationTag) {
   var locale = null;
   if (this.getLocale) locale = this.getLocale();

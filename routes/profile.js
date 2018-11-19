@@ -95,6 +95,13 @@ router.get('*', function(req, res, next) {
   next();
 });
 
+router.get('*', function(req, res, next){
+  if (res.locals.user && (!res.locals.user.ownsRecord(res.locals.record._id))){
+    res.locals.canProposeWings = true;
+  }
+  next();
+});
+
 router.get('*', function(req, res, next) {
   if (!res.locals.user) return next();
   if (res.locals.user.isAdminToOrganisation(res.locals.record.organisation) ||

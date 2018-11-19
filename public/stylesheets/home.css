@@ -491,4 +491,8 @@ img.wingzy-full {
     .soutien-container .soutien-author h4 {
         font-size: 0.7em;
     }
+
+    .black {
+        color: black !important;
+    }
 }

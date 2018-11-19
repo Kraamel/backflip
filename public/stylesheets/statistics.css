@@ -25,7 +25,7 @@
     border-radius: 5px;
     padding:15px;
 }
-#top-searched-wings{
+.statistics #top-searched-wings{
     background-image: linear-gradient(to top right, #DAA520, #E9C261);
     min-height: 550px;
     margin-right:20px;
@@ -34,7 +34,7 @@
     overflow: hidden;
     position: relative;
 }
-#top-searched-wings ol{
+.statistics #top-searched-wings ol{
     padding-right: 40px;
     padding-left: 40px;
     text-align: center;
@@ -42,11 +42,11 @@
     margin-top:50px;
     color:rgb(235,235,235);
 }
-#top-searched-wings ol li{
+.statistics #top-searched-wings ol li{
     margin-top:20px;
     border-bottom: 0.5px solid #C4941C;
 }
-#time-saved{
+.statistics #time-saved{
     position: relative;
     min-height: 250px;
     margin-top: 20px;
@@ -54,39 +54,39 @@
     margin-left: 20px;
 }
 
-#users-container{
+.statistics #users-container{
     position: relative;
     margin-top: 20px;
     margin-bottom: 50px;
 }
-#users-actifs{
+.statistics #users-actifs{
     position: relative;
     min-height: 250px;
     margin-right: 10px;
     margin-left:20px;
 }
-#view-count, #search-count{
+.statistics #view-count, #search-count{
     position: relative;
     min-height: 250px;
     margin-right: 20px;
 }
-#view-count{
+.statistics #view-count{
     margin-left: 20px;
 }
-#search-growth{
+.statistics #search-growth{
     position: relative;
     min-height: 250px;
     margin-right:20px;
     margin-left: 20px;
 }
-#users-growth{
+.statistics #users-growth{
     position: relative;
     margin-top: 20px;
     min-height: 250px;
     margin-right:20px;
     margin-left: 20px;
 }
-.big-text{
+.statistics .big-text{
     position: absolute;
     text-align:center;
     left:0;
@@ -99,7 +99,7 @@
     font-weight: bolder;
     line-height: 0.8em;
 }
-.medium-text{
+.statistics .medium-text{
     position: absolute;
     left:0; right:0; margin:auto;
     top:60%;
@@ -113,7 +113,7 @@
 .black{
     color:rgb(50,50,50);
 }
-#ask-us{
+.statistics #ask-us{
     position: relative;
     margin-left:10px;
     margin-right: 20px;
@@ -123,37 +123,40 @@
     cursor: pointer;
     background-image: linear-gradient(to top right, #DAA520, #E9C261);
 }
-.ask-us-link{
+.statistics .ask-us-link{
     font-size: 0.2em;
     color:white;
     display: none;
 }
 
 @media screen and (min-width: 64em)	{
-    .pure-u-md-1-5{
+    .statistics .pure-u-md-1-5{
         width:20%;
     }
-    .pure-u-md-2-5{
+    .statistics .pure-u-md-2-5{
         width: 40%;
     }
-    .pure-u-1-2{
+    .statistics .pure-u-1-2{
         width:50%;
     }
-    #time-saved{
+    .statistics #time-saved{
         margin-top:0;
         margin-left:0;
     }
-    #view-count{
+    .statistics #view-count{
         margin-left: 0;
     }
-    #users-growth, #search-growth, #users-count, #users-actifs{
+    .statistics #users-growth, 
+    .statistics #search-growth, 
+    .statistics #users-count, 
+    .statistics #users-actifs{
         margin-left:0;
     }
-    #top-searched-wings{
+    .statistics #top-searched-wings{
         height: 510px;
         margin-top:0;
     }
-    #top-searched-wings ol {
+    .statistics #top-searched-wings ol {
         padding:0;
         padding-left:15px;
         font-size: 0.95em;
@@ -165,13 +168,13 @@
     .statistics .main .pure-g h3{
         font-size: 12px;
     }
-    .big-text{
+    .statistics .big-text{
         font-size: 4em;
     }
-    .medium-text{
+    .statistics .medium-text{
         font-size: 1.5em;
     }
-    .ask-us-link{
+    .statistics .ask-us-link{
         display: block;
     }
 }

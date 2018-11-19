@@ -13,3 +13,11 @@
         {{/warning}}
     </ul>
 {{/if}}
+
+{{#if info}}
+    <ul class="errors info">
+        {{#info}}
+            <li><i class="fa fa-info-circle" aria-hidden="true"></i> {{{msg}}}</li>
+        {{/info}}
+    </ul>
+{{/if}}

@@ -22,6 +22,30 @@ router.get('/search', function(req, res, next) {
   return next();
 });
 
+// if redirectTo exists, redirect to the page
+router.get('*/login/callback', function(req, res, next){
+  req.redirectionTag = req.redirectionTag || req.organisationTag;
+  if(!req.query.redirectTo) return next();
+  let redirectTo = req.query.redirectTo;
+
+  // clean query
+  delete req.query.token;
+  delete req.query.hash;
+  delete req.query.redirectTo;
+  delete req.query.subdomains
+
+  // format query for url
+  let query = '?';
+  for (var queryName in req.query) {
+    if( query === '?')
+      query += queryName + '=' + req.query[queryName];
+    else
+      query += '&' + queryName + '=' + req.query[queryName];
+  }
+  
+  return res.redirect(UrlHelper.makeUrl(req.redirectionTag, redirectTo, query, req.session.locale || req.getLocale()));
+});
+
 // Find the best organisationTag to redirect to.
 router.get('*/login/callback', function(req, res, next) {
   req.redirectionTag = req.redirectionTag || req.organisationTag;

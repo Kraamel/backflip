@@ -16,10 +16,11 @@
     "url": "https://github.com/lenomio/backflip/issues"
   },
   "engines": {
-    "node": "6.11.x"
+    "node": ">=8.0.0"
   },
   "homepage": "https://wingzy.com",
   "dependencies": {
+    "agenda": "^2.0.2",
     "algoliasearch": "^3.22.1",
     "array-unique": "^0.3.2",
     "body-parser": "^1.18.3",
@@ -53,6 +54,7 @@
     "node-mailjet": "^3.1.0",
     "parse-domain": "^1.1.0",
     "randomstring": "^1.1.5",
+    "request": "^2.88.0",
     "serve-favicon": "^2.5.0",
     "slack-notify": "^0.1.6",
     "slug": "^0.9.1",

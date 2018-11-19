@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var undefsafe = require('undefsafe');
 
-const { body,validationResult } = require('express-validator/check');
+const { body,validationResult} = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 var User = require('../models/user.js');
@@ -29,11 +29,14 @@ router.use(function(req, res, next) {
   return next();
 });
 
+// sanitize emails data
 router.post('/',
-  sanitizeBody('emails').trim().escape().stripLow(true)
+  sanitizeBody('emails.0').trim().escape().stripLow(true)
 );
+
+// remove space from emails data and create array of emails
 router.post('/', function(req, res, next){
-  req.body.emails[0] = req.body.emails[0].replace(' ', '');
+  req.body.emails[0] = req.body.emails[0].split(' ').join('');
   req.body.emails = req.body.emails[0].split(',');
   return next();
 });
@@ -54,6 +57,7 @@ router.post('/', function(req, res, next) {
     req.body.customMessage = req.body.customMessage.replace(/\r\n|\r|\n/g, '<br/>');
     req.body.emails.forEach(email => {
       if (email) {
+        email = email.trim();
         User.findOneByEmail(email, function(err, user) {
           if (err) return next(err);
           if (!user) {

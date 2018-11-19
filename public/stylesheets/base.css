@@ -161,6 +161,18 @@ ul.successes:last-child {
 ul.errors li {
   padding: 15px;
 }
+.info{
+  background-color: #a4c5cb !important;
+  color:white;
+}
+.info .golden-wings{
+  padding: 6px 12px;
+  background-image: linear-gradient(to top right, #DAA520, #E9C261);
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 35px;
+}
 
 a.fa:hover {
   transform: scale(1.5);
@@ -979,7 +991,7 @@ a.cloud-element:hover,
 }
 
 .cloud-howto {
-  font-size: 10px;
+  font-size: 15px;
   color: #5C4D51;
   padding: 10px;
   text-align: center;
@@ -1003,6 +1015,9 @@ a.cloud-element:hover,
   font-weight: 800;
   color: #ffb400;
   text-decoration: none;
+}
+.proposedWings{
+  background-image: linear-gradient(to top right, #DAA520, #E9C261);
 }
 
 /* SEARCH */

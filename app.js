@@ -59,12 +59,15 @@ if (app.get('env') === 'production') {
 }
 
 // Forest admin
-app.use(require('forest-express-mongoose').init({
-  modelsDir: __dirname + '/models',
-  envSecret: process.env.FOREST_ENV_SECRET,
-  authSecret: process.env.FOREST_AUTH_SECRET,
-  mongoose: require('mongoose')
-}));
+if(process.env.NODE_ENV !== 'staging'){
+  app.use(require('forest-express-mongoose').init({
+    modelsDir: __dirname + '/models',
+    envSecret: process.env.FOREST_ENV_SECRET,
+    authSecret: process.env.FOREST_AUTH_SECRET,
+    mongoose: require('mongoose')
+  }));
+}
+
 
 // www is not an organisation, it's an 1990 artifact.
 app.use(function(req, res, next) {
@@ -85,6 +88,9 @@ i18n.configure({
 });
 
 app.use(i18n.init);
+
+var Agenda = require('./models/agenda_scheduler');
+Agenda.i18n = i18n;
 
 //@todo the i18n.init is quite heavy, can we avoid this logic when we read the Locale from the URL ?
 app.use(function(req, res, next) {
@@ -161,6 +167,9 @@ app.use(function(req, res, next) {
   }
   return next();
 });
+
+var api = require('./api/api');
+app.use('/api', api);
 
 // Looking for the org and setup res.locals.organisation
 var org = require('./routes/org.js');

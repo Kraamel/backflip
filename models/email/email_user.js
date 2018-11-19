@@ -7,7 +7,6 @@ var Record = require('../record.js');
 var Organisation = require('../organisation.js');
 var EmailHelper = require('../../helpers/email_helper.js');
 var UrlHelper = require('../../helpers/url_helper.js');
-
 var EmailUser = {};
 
 //@todo look for user with a google email too
@@ -80,17 +79,35 @@ EmailUser.tooSoon = function (user, callback) {
 EmailUser.sendInviteEmail = function (user, sender, organisation, customMessage = null, res, callback) {
   user.addInvitation(organisation, sender);
   EmailUser.generateToken(user, function(err, user) {
-    if (err) return callback(err);
-    EmailHelper.public.emailInvite(
+      if (err) return callback(err);
+      EmailHelper.public.emailInvite(
+        user.email.value,
+        sender.getName(organisation._id),
+        sender.senderEmail,
+        organisation.name,
+        customMessage,
+        EmailUser.getLoginUrl(user, organisation, res.getLocale()),
+        res);
+
+      var Agenda = require('../../models/agenda_scheduler');
+      Agenda.scheduleResendInvitation(user, sender, organisation, res.getLocale());
+      return callback(null, user);
+  });
+};
+
+EmailUser.resendInviteEmail = function(user, sender, organisation, locale, i18n) {
+  user.addInvitation(organisation, sender);
+  EmailUser.generateToken(user, function(err, user) {
+    if (err) return console.error(err);
+    EmailHelper.public.emailReinvite(
       user.email.value,
       sender.getName(organisation._id),
       sender.senderEmail,
       organisation.name,
-      customMessage,
-      EmailUser.getLoginUrl(user, organisation, res.getLocale()),
-      res);
-    return callback(null, user);
-  });
+      EmailUser.getLoginUrl(user, organisation, locale),
+      locale,
+      i18n);    
+});
 };
 
 //@todo this should not be here as the logic is shared with other login strategies.
@@ -111,6 +128,14 @@ EmailUser.sendMonthlyEmail = function(user, sender, organisation, userCount, ext
     return callback(null, user);
   });
 };
+
+EmailUser.makeEmailFromGoogle = function(userP, callback) {
+  userP.email = {value: userP.google.email};
+  EmailUser.generateToken(userP, function(err, user) {
+    if (err) return callback(err);
+    return callback(null, user);
+  });
+}
 
 EmailUser.getLoginUrl = function(user, organisation, locale) {
   var url = new UrlHelper(undefsafe(organisation, 'tag'), "email/login/callback", `?hash=${user.email.hash}&token=${user.email.token}`, locale).getUrl();

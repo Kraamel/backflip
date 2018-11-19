@@ -93,6 +93,10 @@ $(document).ready(function () {
   var hashtagsBank = {};
   addHashtagsToBank(hashtagsForBank);
 
+  // proposed wings if they exist
+  var proposedWings = (new URLSearchParams(window.location.search)).get('proposedWings');
+  if(proposedWings) proposedWings = proposedWings.split(',');
+
   // Selectize
   var selectizeHashtags = '';
   var $selectize = $searchInput.selectize({
@@ -104,7 +108,6 @@ $(document).ready(function () {
     plugins: ['drag_drop', 'remove_button', 'soft_clear_options', 'has_item', 'create_on_enter', 'keep_placeholder'],
     persist: false,
     create: function(input) {
-      console.log(input);
       return getHashtag(input);
     },
     openOnFocus: false,
@@ -249,6 +252,12 @@ $(document).ready(function () {
     });
   }
 
+  function isProposedWings(hashtag) {
+    if(proposedWings)
+      return proposedWings.includes(hashtag.tag.replace('#', ''))
+    return false;
+  }
+
   function getHashtag(hashtag) {
     if (typeof hashtag === "string") {
       if(hashtag.charAt(0) !== '#') hashtag = '#' + hashtag;
@@ -257,6 +266,9 @@ $(document).ready(function () {
     if (hashtagsBank[hashtag.tag]) {
       hashtag = hashtagsBank[hashtag.tag];
     }
+    if(isProposedWings(hashtag)){
+      hashtag.proposedClass = 'proposedWings';
+    } 
     if (!hashtag.type) hashtag.type = 'hashtag';
     if (!hashtag.name) hashtag.name = hashtag.tag.replace('#','');
     hashtag.pictureHtml = getPictureHtml(hashtag, true);
