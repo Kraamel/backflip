@@ -3,6 +3,7 @@ var router = express.Router();
 var authorization = require('../mid_authorization_organisation');
 var EmailUser = require('../../models/email/email_user');
 var User = require('../../models/user');
+var EmailHelper = require('../../helpers/email_helper.js');
 var UrlHelper = require('../../helpers/url_helper');
 
 var passport = require('passport');
@@ -61,8 +62,14 @@ router.post('/password', (req, res, next) => {
 });
 
 /*eslint-disable */
-router.post('/invite', passport.authenticate('bearer', {session: false}), authorization, (req, res, next) => {
-    return res.status(200).json({message: 'TODO'});
+router.post('/invitation/code/confirmation', passport.authenticate('bearer', {session: false}), (req, res, next) => {
+  EmailHelper.public.emailConfirmationInvitation(req.user.loginEmail, res)
+    .then(() => {
+      return res.status(200).json({message: 'Email send with success.'});
+    }).catch((err) => {
+    console.log('error: ' + err);
+    return next(err);
+  });
 });
 /*eslint-enable */
 

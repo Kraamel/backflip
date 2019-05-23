@@ -319,20 +319,38 @@ var EmailHelper = {
             "MJ-TemplateLanguage": true,
             "Recipients": [
               { "Email": email }
-            ],
-            "Vars": {
-              "intro": res.__("Hello,<br/>Click on the red button below to create your new password to secure your Wingzy account.<br/>If you don't want to change your password, all is fine, just do nothing.<br/>Thanks :)"),
-              "url": url || defaultLink,
-              "button": res.__("Create password"),
-              "outro": res.__("This red button can be used to securely access Wingzy for 30 days.")
-            }
-          });
-        request
-          .then()
-          .catch(err => {
-            console.log(err);
-          });
-      },
+          ],
+          "Vars": {
+            "intro": res.__("Hello,<br/>Click on the red button below to create your new password to secure your Wingzy account.<br/>If you don't want to change your password, all is fine, just do nothing.<br/>Thanks :)"),
+            "url": url || defaultLink,
+            "button": res.__("Create password"),
+            "outro": res.__("This red button can be used to securely access Wingzy for 30 days.")
+          }
+        });
+      request
+        .then()
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    emailConfirmationInvitation : function (email, res) {
+      return mailjet
+        .post("send")
+        .request({
+          "FromEmail": defaultEmitter,
+          "FromName": defaultEmitterName,
+          "Subject": res.__("Invitation"),
+          "MJ-TemplateID": "197497",
+          "MJ-TemplateLanguage": true,
+          "Recipients": [
+            {"Email": email}
+          ],
+          "Vars": {
+            "intro": res.__("Hello,<br/>After sending the url link to your co-worker, you'll receive an email when they'll create a profil<br/><br/>Thanks :)"),
+            "outro": res.__("This url can be used to securely access Wingzy for 30 days.")
+          }
+        });
+    },
       emailSecurityIntegration: function(recipientEmail, integrationName, integrationUserEmail, url, res) {
         const request = mailjet
           .post("send")
