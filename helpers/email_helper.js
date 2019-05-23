@@ -278,59 +278,77 @@ var EmailHelper = {
         request
         .then()
         .catch(err => console.log(err));
-      },
+    },
       emailConfirmation: function(email, url, organisationName, res){
-        const yourCompany = organisationName || res.__("your company");
-        const request = mailjet
-          .post("send")
-          .request({
-            "FromEmail": defaultEmitter,
-            "FromName": defaultEmitterName,
-            "Subject": res.__("Confirm your email address"),
-            "MJ-TemplateID": "197497",
-            "MJ-TemplateLanguage": true,
-            "Recipients": [
+      const yourCompany = organisationName || res.__("your company");
+      const request = mailjet
+        .post("send")
+        .request({
+          "FromEmail": defaultEmitter,
+          "FromName": defaultEmitterName,
+          "Subject": res.__("Confirm your email address"),
+          "MJ-TemplateID": "197497",
+          "MJ-TemplateLanguage": true,
+          "Recipients": [
               { "Email": email }
-            ],
-            "Vars": {
-              "intro": res.__("Hello,<br/>Thank you for signing up on Wingzy, the talent directory of {{organisationName}}!<br/>Just click on this red button below to access Wingzy securely.<br/>Thanks :)",
-                              {organisationName: yourCompany}),
-              "url": url || defaultLink,
-              "button": res.__("Confirm email"),
-              "outro": res.__("This red button can be used to securely access Wingzy for 30 days.")
-            }
-          });
-        request
-          .then()
-          .catch(err => {
-            console.log(err);
-          });
-      },
+          ],
+          "Vars": {
+            "intro": res.__("Hello,<br/>Thank you for signing up on Wingzy, the talent directory of {{organisationName}}!<br/>Just click on this red button below to access Wingzy securely.<br/>Thanks :)",
+              {organisationName: yourCompany}),
+            "url": url || defaultLink,
+            "button": res.__("Confirm email"),
+            "outro": res.__("This red button can be used to securely access Wingzy for 30 days.")
+          }
+        });
+      request
+        .then()
+        .catch(err => {
+          console.log(err);
+        });
+    },
       emailPasswordRecovery: function(email, url, res){
-        const request = mailjet
-          .post("send")
-          .request({
-            "FromEmail": defaultEmitter,
-            "FromName": defaultEmitterName,
-            "Subject": res.__("Create a new password"),
-            "MJ-TemplateID": "197497",
-            "MJ-TemplateLanguage": true,
-            "Recipients": [
+      const request = mailjet
+        .post("send")
+        .request({
+          "FromEmail": defaultEmitter,
+          "FromName": defaultEmitterName,
+          "Subject": res.__("Create a new password"),
+          "MJ-TemplateID": "197497",
+          "MJ-TemplateLanguage": true,
+          "Recipients": [
               { "Email": email }
-            ],
-            "Vars": {
-              "intro": res.__("Hello,<br/>Click on the red button below to create your new password to secure your Wingzy account.<br/>If you don't want to change your password, all is fine, just do nothing.<br/>Thanks :)"),
-              "url": url || defaultLink,
-              "button": res.__("Create password"),
-              "outro": res.__("This red button can be used to securely access Wingzy for 30 days.")
-            }
-          });
-        request
-          .then()
-          .catch(err => {
-            console.log(err);
-          });
-      }
+          ],
+          "Vars": {
+            "intro": res.__("Hello,<br/>Click on the red button below to create your new password to secure your Wingzy account.<br/>If you don't want to change your password, all is fine, just do nothing.<br/>Thanks :)"),
+            "url": url || defaultLink,
+            "button": res.__("Create password"),
+            "outro": res.__("This red button can be used to securely access Wingzy for 30 days.")
+          }
+        });
+      request
+        .then()
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    emailConfirmationInvitation : function (email, res) {
+      return mailjet
+        .post("send")
+        .request({
+          "FromEmail": defaultEmitter,
+          "FromName": defaultEmitterName,
+          "Subject": res.__("Invitation"),
+          "MJ-TemplateID": "197497",
+          "MJ-TemplateLanguage": true,
+          "Recipients": [
+            {"Email": email}
+          ],
+          "Vars": {
+            "intro": res.__("Hello,<br/>After sending the url link to your co-worker, you'll receive an email when they'll create a profil<br/><br/>Thanks :)"),
+            "outro": res.__("This url can be used to securely access Wingzy for 30 days.")
+          }
+        });
+    },
   }
 };
 

@@ -11,12 +11,10 @@ var EmailUser = {};
 
 //@todo look for user with a google email too
 EmailUser.getByEmail = function (email, callback) {
-  User.findOne({'email.normalized': User.normalizeEmail(email)}).
-  populate('orgsAndRecords.record').
-  exec(callback);
+  User.findOne({'email.normalized': User.normalizeEmail(email)}).populate('orgsAndRecords.record').exec(callback);
 };
 
-EmailUser.makeNormalized = function(user, force) {
+EmailUser.makeNormalized = function (user, force) {
   if (force) user.email.normalized = null;
   user.email.normalized = user.email.normalized || User.normalizeEmail(user.email.value);
 };
@@ -24,9 +22,9 @@ EmailUser.makeNormalized = function(user, force) {
 // @todo move to main model, we got a nasty bug because population was not the same
 EmailUser.getByHash = function (hash, callback) {
   User.findOne({'email.hash': hash})
-  .populate('orgsAndRecords.record', 'name picture tag')
-  .populate('orgsAndRecords.organisation', 'name picture tag')
-  .exec(callback);
+    .populate('orgsAndRecords.record', 'name picture tag')
+    .populate('orgsAndRecords.organisation', 'name picture tag')
+    .exec(callback);
 };
 
 EmailUser.makeHash = function (user, force) {
@@ -40,7 +38,7 @@ EmailUser.newFromEmail = function (email) {
   return EmailUser.addStrategy(email, user);
 };
 
-EmailUser.addStrategy = function(email, user, callback) {
+EmailUser.addStrategy = function (email, user, callback) {
   user.email.value = email;
   EmailUser.makeNormalized(user);
   EmailUser.makeHash(user);
@@ -62,7 +60,7 @@ EmailUser.generateToken = function (user, callback) {
 
 //@todo fails if user.orgsAndRecords not populated
 EmailUser.sendLoginEmail = function (user, organisation, res, callback) {
-  EmailUser.generateToken(user, function(err, user) {
+  EmailUser.generateToken(user, function (err, user) {
     if (err) return callback(err);
     let name = organisation ? user.getName(organisation._id).split(' ')[0] : '';
     EmailHelper.public.emailLogin(user.email.value, name, EmailUser.getLoginUrl(user, organisation, res.getLocale()), res);
@@ -70,73 +68,73 @@ EmailUser.sendLoginEmail = function (user, organisation, res, callback) {
   });
 };
 
-EmailUser.sendEmailConfirmation = function(user, res, orgTag){
+EmailUser.sendEmailConfirmation = function (user, res, orgTag) {
   user.email.normalized = user.email.normalized || User.normalizeEmail(user.email.value);
   user.email.hash = md5(user.email.normalized);
   EmailUser.makeHash(user);
   user.email.token = randomstring.generate(128);
   user.email.generated = Date.now();
   return User.updateOne({'_id': user._id}, {$set: user})
-  .then(resp => {
-    if(resp.ok === 1){
-      return EmailHelper.public.emailConfirmation(
-        user.email.value, 
-        new UrlHelper(orgTag, "api/emails/confirmation/callback/" + user.email.token + '/' + user.email.hash, null, null).getUrl(),
-        orgTag,
-        res);
-    }else{
-      throw new Error("Cannot update the user object.");
-    }
-  });
+    .then(resp => {
+      if (resp.ok === 1) {
+        return EmailHelper.public.emailConfirmation(
+          user.email.value,
+          new UrlHelper(orgTag, "api/emails/confirmation/callback/" + user.email.token + '/' + user.email.hash, null, null).getUrl(),
+          orgTag,
+          res);
+      } else {
+        throw new Error("Cannot update the user object.");
+      }
+    });
 }
 
-EmailUser.sendPasswordRecoveryEmail = function(user, locale, res){
+EmailUser.sendPasswordRecoveryEmail = function (user, locale, res) {
   user.email.normalized = user.email.normalized || User.normalizeEmail(user.email.value);
   user.email.hash = user.email.hash || md5(user.email.normalized);
   user.email.token = randomstring.generate(128); // we modify token, because token is a way to authenticate
   user.email.generated = Date.now();
   
   return User.updateOne({'_id': user._id}, {$set: user})
-  .then(resp => {
-    if(resp.ok === 1){
-      return EmailHelper.public.emailPasswordRecovery(
-        user.email.value, 
-        "https://" + process.env.HOST_FRONTFLIP + '/' + locale + '/password/reset/' + user.email.token + '/' + user.email.hash,
-        res);
-    }else{
-      throw new Error("Cannot update the user object.");
-    }
-  });
-}
+    .then(resp => {
+      if (resp.ok === 1) {
+        return EmailHelper.public.emailPasswordRecovery(
+          user.email.value,
+          "https://" + process.env.HOST_FRONTFLIP + '/' + locale + '/password/reset/' + user.email.token + '/' + user.email.hash,
+          res);
+      } else {
+        throw new Error("Cannot update the user object.");
+      }
+    });
+};
 
 //if we generated a token less than 60 sec ago
 EmailUser.tooSoon = function (user, callback) {
-  return user.email.generated > Date.now() - 60*1000;
+  return user.email.generated > Date.now() - 60 * 1000;
 };
 
 //@todo fails if user.orgsAndRecords not populated
 EmailUser.sendInviteEmail = function (user, sender, organisation, customMessage = null, res, callback) {
   user.addInvitation(organisation, sender);
-  EmailUser.generateToken(user, function(err, user) {
-      if (err) return callback(err);
-      EmailHelper.public.emailInvite(
-        user.email.value,
-        sender.getName(organisation._id),
-        sender.senderEmail,
-        organisation.name,
-        customMessage,
-        EmailUser.getLoginUrl(user, organisation, res.getLocale()),
-        res);
-
-      var Agenda = require('../../models/agenda_scheduler');
-      Agenda.scheduleResendInvitation(user, sender, organisation, res.getLocale());
-      return callback(null, user);
+  EmailUser.generateToken(user, function (err, user) {
+    if (err) return callback(err);
+    EmailHelper.public.emailInvite(
+      user.email.value,
+      sender.getName(organisation._id),
+      sender.senderEmail,
+      organisation.name,
+      customMessage,
+      EmailUser.getLoginUrl(user, organisation, res.getLocale()),
+      res);
+    
+    var Agenda = require('../../models/agenda_scheduler');
+    Agenda.scheduleResendInvitation(user, sender, organisation, res.getLocale());
+    return callback(null, user);
   });
 };
 
-EmailUser.resendInviteEmail = function(user, sender, organisation, locale, i18n) {
+EmailUser.resendInviteEmail = function (user, sender, organisation, locale, i18n) {
   user.addInvitation(organisation, sender);
-  EmailUser.generateToken(user, function(err, user) {
+  EmailUser.generateToken(user, function (err, user) {
     if (err) return console.error(err);
     EmailHelper.public.emailReinvite(
       user.email.value,
@@ -145,14 +143,14 @@ EmailUser.resendInviteEmail = function(user, sender, organisation, locale, i18n)
       organisation.name,
       EmailUser.getLoginUrl(user, organisation, locale),
       locale,
-      i18n);    
-});
+      i18n);
+  });
 };
 
 //@todo this should not be here as the logic is shared with other login strategies.
 //@todo rewrite to allow all login strategies
-EmailUser.sendMonthlyEmail = function(user, sender, organisation, userCount, extract, res, callback) {
-  EmailUser.generateToken(user, function(err, user) {
+EmailUser.sendMonthlyEmail = function (user, sender, organisation, userCount, extract, res, callback) {
+  EmailUser.generateToken(user, function (err, user) {
     if (err) return callback(err);
     EmailHelper.public.emailMonthly(
       user.loginEmail,
@@ -163,26 +161,26 @@ EmailUser.sendMonthlyEmail = function(user, sender, organisation, userCount, ext
       EmailUser.getLoginUrl(user, organisation, res.getLocale()),
       extract,
       res
-      );
+    );
     return callback(null, user);
   });
 };
 
-EmailUser.makeEmailFromGoogle = function(userP, callback) {
+EmailUser.makeEmailFromGoogle = function (userP, callback) {
   userP.email = {value: userP.google.email};
-  EmailUser.generateToken(userP, function(err, user) {
+  EmailUser.generateToken(userP, function (err, user) {
     if (err) return callback(err);
     return callback(null, user);
   });
 }
 
-EmailUser.getLoginUrl = function(user, organisation, locale) {
+EmailUser.getLoginUrl = function (user, organisation, locale) {
   var url = new UrlHelper(undefsafe(organisation, 'tag'), "email/login/callback", `?hash=${user.email.hash}&token=${user.email.token}`, locale).getUrl();
   return url;
 };
 
-EmailUser.login = function(hash, token, callback) {
-  EmailUser.getByHash(hash, function(err, user) {
+EmailUser.login = function (hash, token, callback) {
+  EmailUser.getByHash(hash, function (err, user) {
     if (err) return callback(err);
     if (!user) {
       err = new Error('Cannot find user from Hash');
@@ -198,7 +196,7 @@ EmailUser.login = function(hash, token, callback) {
   });
 };
 
-EmailUser.authenticate = function(user, token) {
+EmailUser.authenticate = function (user, token) {
   if (EmailUser.tokenStillValid(user.email.generated)) {
     if (user.email.token === token) {
       return true;
@@ -215,14 +213,14 @@ EmailUser.authenticate = function(user, token) {
   }
 };
 
-EmailUser.tokenStillValid = function(generated) {
-  return generated > Date.now() - 24*30*3600*1000;
+EmailUser.tokenStillValid = function (generated) {
+  return generated > Date.now() - 24 * 30 * 3600 * 1000;
 };
 
 //@todo this is as dodgy as an aligator wearing a kilt asking for the spare change
 //@todo can be removed once edit.js is removed
-EmailUser.addByEmail = function(email, organisation, record, callback) {
-  this.getByEmail(email, function(err, user) {
+EmailUser.addByEmail = function (email, organisation, record, callback) {
+  this.getByEmail(email, function (err, user) {
     if (err) return callback(err);
     if (!user) {
       user = EmailUser.newFromEmail(email);
