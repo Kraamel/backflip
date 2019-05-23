@@ -186,8 +186,8 @@ EmailUser.sendReactiveUserEmail = function(user, organisation, record, i18n) {
     EmailUser.generateToken(user, function(err, userUpdated) {
       if(err) return reject(err);
       EmailHelper.public.emailReactivateUser(
-        userUpdated.loginEmail, 
-        organisation, 
+        userUpdated.loginEmail,
+        organisation,
         firstName,
         (process.env.NODE_ENV === 'development' ? 'http://' : 'https://' ) + process.env.HOST_FRONTFLIP  + '/' + userUpdated.locale + '/' +(organisation ? organisation.tag : ''),
         (new UrlHelper(null, 'api/emails/unsubscribe/' + userUpdated.email.token + '/' + userUpdated.email.hash, null, null)).getUrl(),

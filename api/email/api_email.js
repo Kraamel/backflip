@@ -3,6 +3,7 @@ var router = express.Router();
 var authorization = require('../mid_authorization_organisation');
 var EmailUser = require('../../models/email/email_user');
 var User = require('../../models/user');
+var EmailHelper = require('../../helpers/email_helper.js');
 var UrlHelper = require('../../helpers/url_helper');
 var SlackHelper = require('../../helpers/slack_helper');
 var passport = require('passport');
@@ -83,8 +84,8 @@ router.post('/password', (req, res, next) => {
 });
 
 /*eslint-disable */
-router.post('/invite', passport.authenticate('bearer', { session: false }), authorization, (req, res, next) => {
-	return res.status(200).json({ message: 'TODO' });
+router.post('/invite', passport.authenticate('bearer', {session: false}), authorization, (req, res, next) => {
+    return res.status(200).json({message: 'TODO'});
 });
 /*eslint-enable */
 
