@@ -333,21 +333,29 @@ var EmailHelper = {
           console.log(err);
         });
     },
-    emailConfirmationInvitation : function (email, res) {
+    emailConfirmationInvitation: function (email, organisation, firstName, locale, url, res) {
+      res.setLocale(locale);
       return mailjet
         .post("send")
         .request({
           "FromEmail": defaultEmitter,
           "FromName": defaultEmitterName,
-          "Subject": res.__("Invitation"),
-          "MJ-TemplateID": "197497",
+          "Subject": (res.__("Code d'Invitation")),
+          "MJ-TemplateID": "854412",
           "MJ-TemplateLanguage": true,
           "Recipients": [
             {"Email": email}
           ],
           "Vars": {
-            "intro": res.__("Hello,<br/>After sending the url link to your co-worker, you'll receive an email when they'll create a profil<br/><br/>Thanks :)"),
-            "outro": res.__("This url can be used to securely access Wingzy for 30 days.")
+            "title": (firstName ? res.__("Hello {{firstName}},", {firstName: firstName || ''}) : res.__("Hello,")),
+            "text": res.__("After sending the invitation url to your co-workers, you'll receive an email when they'll be in {{organisationName}}. This url will stay available for 30 days",
+              {organisationName: (organisation && organisation.name ? organisation.name : 'your company')}),
+            "ctaText": res.__("Back to {{organisationName}}", {organisationName: (organisation && organisation.name ? organisation.name : 'your company')}),
+            "squareIcon": "https://i.pinimg.com/originals/5e/c1/ea/5ec1ea7d5122395cb273727205f978a3.png",
+            "ctaUrl": url || defaultLink,
+            "orgBannerUrl": (organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl),
+            "orgLogoUrl": (organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl),
+            "outro": res.__("For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")
           }
         });
     },

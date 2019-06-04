@@ -449,5 +449,9 @@
 	"We miss you.": "We miss you.",
 	"We have not seen you on Wingzy in a while. What a shame : it is a great app to find and help each other at {{organisationName}}": "We have not seen you on Wingzy in a while. What a shame : it is a great app to find and help each other at {{organisationName}}",
 	"Search {{organisationName}}": "Search {{organisationName}}",
-	"{{firstName}}, we miss you!": "{{firstName}}, we miss you!"
+	"{{firstName}}, we miss you!": "{{firstName}}, we miss you!",
+	"Code d'Invitation": "Code d'Invitation",
+	"Hello {{firstName}},": "Hello {{firstName}},",
+	"After sending the invitation url to your co-workers, you'll receive an email when they'll be in {{organisationName}}. This url will stay available for 30 days": "Après avoir envoyé cet url d'invitation à vos collègues, vous recevrez un email lorsqu'il créeront leur compte Wingzy x {{organisationName}}. Cet url restera valable pour 30 jours",
+	"Back to {{organisationName}}": "Back to {{organisationName}}"
 }
