@@ -91,7 +91,6 @@ router.post('/invitation/:orgId/confirmation', passport.authenticate('bearer', {
     .populate('orgsAndRecords.organisation', '_id name tag logo cover')
     .then(user => {
       let orgAndRecordArray = user.orgsAndRecords.filter(orgAndRecord => orgAndRecord.organisation._id.equals(req.params.orgId));
-      if (orgAndRecordArray.length === 0) return res.status(403).json({message: 'User not in org'});
       
       let userName = orgAndRecordArray[0].record.name;
       let organisation = orgAndRecordArray[0].organisation;
