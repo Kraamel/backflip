@@ -84,14 +84,37 @@ router.post('/password', (req, res, next) => {
 });
 
 /*eslint-disable */
-router.post('/invite', passport.authenticate('bearer', {session: false}), authorization, (req, res, next) => {
-    return res.status(200).json({message: 'TODO'});
+
+router.post('/invitation/:orgId/confirmation', passport.authenticate('bearer', {session: false}), (req, res, next) => {
+  User.findOne({'_id': req.user._id})
+    .populate('orgsAndRecords.record', '_id name tag')
+    .populate('orgsAndRecords.organisation', '_id name tag logo cover')
+    .then(user => {
+      let orgAndRecordArray = user.orgsAndRecords.filter(orgAndRecord => orgAndRecord.organisation._id.equals(req.params.orgId));
+      if (orgAndRecordArray.length === 0) return res.status(403).json({message: 'User not in org'});
+      
+      let userName = orgAndRecordArray[0].record.name;
+      let organisation = orgAndRecordArray[0].organisation;
+      EmailHelper.public.emailConfirmationInvitation(
+        req.user.loginEmail,
+        organisation,
+        userName,
+        req.user.locale,
+        (process.env.NODE_ENV === 'development' ? 'http://' : 'https://') + process.env.HOST_FRONTFLIP + '/' + req.user.locale + '/' + (req.organisation ? req.organisation.tag : ''),
+        res)
+        .then(() => {
+          return res.status(200).json({message: 'Email send with success.'});
+        }).catch((err) => {
+        console.log('error: ' + err);
+        return next(err);
+      });
+    })
 });
 /*eslint-enable */
 
-router.use(function (err, req, res, next) {
-	if (err) return res.status(500).json({ message: 'Internal error', errors: [err.message] });
-	return res.status(500).json({ message: 'Unexpected error' });
+router.use(function(err, req, res, next){
+    if(err) return res.status(500).json({message: 'Internal error', errors: [err.message]});
+  return res.status(500).json({message: 'Unexpected error'});
 });
 
 module.exports = router;
