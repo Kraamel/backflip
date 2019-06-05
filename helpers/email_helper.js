@@ -333,7 +333,7 @@ var EmailHelper = {
           console.log(err);
         });
     },
-    emailConfirmationInvitation: function (email, organisation, firstName, locale, url, res) {
+    emailConfirmationInvitation: function (email, organisation, firstName, locale, url, invitationUrl, res) {
       res.setLocale(locale);
       return mailjet
         .post("send")
@@ -348,8 +348,8 @@ var EmailHelper = {
           ],
           "Vars": {
             "title": (firstName ? res.__("Hello {{firstName}},", {firstName: firstName || ''}) : res.__("Hello,")),
-            "text": res.__("After sending the invitation url to your co-workers, you'll receive an email when they'll be in {{organisationName}}. This url will stay available for 30 days",
-              {organisationName: (organisation && organisation.name ? organisation.name : 'your company')}),
+            "text": res.__("After sending the invitation url to your co-workers, you'll receive an email when they'll be in {{organisationName}}. This url will stay available for 30 days, keep sharing it {{invitationUrl}}",
+              {organisationName: (organisation && organisation.name ? organisation.name : 'your company'), invitationUrl: invitationUrl || ''}),
             "ctaText": res.__("Back to {{organisationName}}", {organisationName: (organisation && organisation.name ? organisation.name : 'your company')}),
             "squareIcon": "https://i.pinimg.com/originals/5e/c1/ea/5ec1ea7d5122395cb273727205f978a3.png",
             "ctaUrl": url || defaultLink,

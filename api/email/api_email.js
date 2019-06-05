@@ -91,18 +91,18 @@ router.post('/invitation/:orgId/confirmation', passport.authenticate('bearer', {
     .populate('orgsAndRecords.organisation', '_id name tag logo cover')
     .then(user => {
       let orgAndRecordArray = user.orgsAndRecords.filter(orgAndRecord => orgAndRecord.organisation._id.equals(req.params.orgId));
-      
       let userName = orgAndRecordArray[0].record.name;
       let organisation = orgAndRecordArray[0].organisation;
-      EmailHelper.public.emailConfirmationInvitation(
+	    EmailHelper.public.emailConfirmationInvitation(
         req.user.loginEmail,
         organisation,
         userName,
         req.user.locale,
         (process.env.NODE_ENV === 'development' ? 'http://' : 'https://') + process.env.HOST_FRONTFLIP + '/' + req.user.locale + '/' + (req.organisation ? req.organisation.tag : ''),
+        req.body.invitationUrl,
         res)
         .then(() => {
-          return res.status(200).json({message: 'Email send with success.'});
+	        return res.status(200).json({message: 'Email send with success.'});
         }).catch((err) => {
         console.log('error: ' + err);
         return next(err);
