@@ -333,29 +333,29 @@ var EmailHelper = {
           console.log(err);
         });
     },
-    emailConfirmationInvitation: function (email, organisation, firstName, locale, url, invitationUrl, res) {
+    emailConfirmationInvitation: function (email, organisation, firstName, locale, invitationUrl, res) {
       res.setLocale(locale);
       return mailjet
         .post("send")
         .request({
           "FromEmail": defaultEmitter,
           "FromName": defaultEmitterName,
-          "Subject": (res.__("Code d'Invitation")),
-          "MJ-TemplateID": "854412",
+          "Subject": (res.__("Thanks for the help!")),
+          "MJ-TemplateID": "868473",
           "MJ-TemplateLanguage": true,
           "Recipients": [
             {"Email": email}
           ],
           "Vars": {
-            "title": (firstName ? res.__("Hello {{firstName}},", {firstName: firstName || ''}) : res.__("Hello,")),
-            "text": res.__("After sending the invitation url to your co-workers, you'll receive an email when they'll be in {{organisationName}}. This url will stay available for 30 days, keep sharing it {{invitationUrl}}",
-              {organisationName: (organisation && organisation.name ? organisation.name : 'your company'), invitationUrl: invitationUrl || ''}),
-            "ctaText": res.__("Back to {{organisationName}}", {organisationName: (organisation && organisation.name ? organisation.name : 'your company')}),
-            "squareIcon": "https://i.pinimg.com/originals/5e/c1/ea/5ec1ea7d5122395cb273727205f978a3.png",
-            "ctaUrl": url || defaultLink,
+            "title": (firstName ? res.__("{{firstName}}, thanks for the help!", {firstName: firstName || ''}) : res.__("Thanks for the help!")),
+            "text": res.__("The more we are on Wingzy, the more we help each other. Share this secured link to invite even more people from {{orgName}} to join",
+              {orgName: (organisation && organisation.name ? organisation.name : 'your company')}),
+            "ctaText": invitationUrl,
+            "squareIcon": "https://images.emojiterra.com/twitter/v12/512px/1f60d.png",
+            "ctaUrl":  invitationUrl || defaultLink,
             "orgBannerUrl": (organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl),
             "orgLogoUrl": (organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl),
-            "outro": res.__("For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")
+            "outro": res.__("WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")
           }
         });
     },
