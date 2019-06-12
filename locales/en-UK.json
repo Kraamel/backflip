@@ -474,5 +474,9 @@
 	"Thanks for the help!": "Thanks for the help!",
 	"{{firstName}}, thanks for the help!": "{{firstName}}, thanks for the help!",
 	"The more we are on Wingzy, the more we help each other. Share this secured link to invite even more people from {{orgName}} to join": "The more we are on Wingzy, the more we help each other. Share this secured link to invite even more people from {{orgName}} to join",
-	"WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>": "WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>"
+	"WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>": "WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>",
+	"Hello %s": "Hello %s",
+	"You have invited %s to join {{orgName}} on Wingzy.<br/> %s has accepted your invitation !<br/> Thank you for spreading your Wings.": "You have invited %s to join {{orgName}} on Wingzy.<br/> %s has accepted your invitation !<br/> Thank you for spreading your Wings.",
+	"See %s profile": "See %s profile",
+	"You have invited %s to join %s on Wingzy.<br/> %s has accepted your invitation !<br/> Thank you for spreading your Wings.": "You have invited %s to join %s on Wingzy.<br/> %s has accepted your invitation !<br/> Thank you for spreading your Wings."
 }

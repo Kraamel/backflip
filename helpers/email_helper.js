@@ -190,32 +190,31 @@ var EmailHelper = {
           console.log(err);
         });
       },
-      emailInvitationAccepted: function(recipientName, recipientEmail, senderName, senderEmail, organisationName, url, res) {
-        console.log(url)
-        const request = mailjet
+      emailInvitationAccepted: function(recipientName, email, senderName, senderEmail, organisation, url, res) {
+      console.log(url);
+      console.log(organisation);
+        return mailjet
           .post("send")
           .request({
-            "FromEmail": senderEmail || defaultEmitter,
+            "FromEmail": defaultEmitter,
             "FromName": defaultEmitterName,
             "Subject": res.__("Discover the Wings of %s !", senderName),
-            "MJ-TemplateID": "571332",
+            "MJ-TemplateID": "868473",
             "MJ-TemplateLanguage": true,
             "Recipients": [
-              { "Email": recipientEmail }
+              {"Email": email}
             ],
             "Vars": {
-              "intro": res.__("Hello %s,<br/> You have invited %s to join %s on Wingzy.<br/> %s has accepted your invitation !<br/> Thank you for spreading your Wings.",
-                              recipientName, senderName, organisationName, senderName),
-              "button": res.__("See his profile"),
-              "url": url || defaultLink,
-              "orgLogoUrl": 'https://wingzy.io/wingzy.png',
-              "outro": res.__("This red button can be used to securely access Wingzy for 30 days.")
+              "title": res.__("Hello %s", recipientName),
+              "text": res.__("You have invited %s to join %s on Wingzy.<br/> %s has accepted your invitation !<br/> Thank you for spreading your Wings.",
+                senderName, organisation && organisation.name ? organisation.name : 'your company', senderName),
+              "ctaText": res.__("See %s profile", senderName),
+              "squareIcon": "https://emojis.wiki/emoji-pics/twitter/hugging-face-twitter.png",
+              "ctaUrl":  url || defaultLink,
+              "orgBannerUrl": organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl,
+              "orgLogoUrl": organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl,
+              "outro": res.__("WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")
             }
-          });
-        request
-          .then()
-          .catch(err => {
-            console.log(err);
           });
       },
       emailProposeWings: function(recipientName, recipientEmail, senderName, wingsProposed, organisationName, url, res) {

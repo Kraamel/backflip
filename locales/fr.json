@@ -461,5 +461,11 @@
 	"Thanks for the help!": "Merci pour l'aide !",
 	"{{firstName}}, thanks for the help!": "{{firstName}}, merci pour l'aide !",
 	"The more we are on Wingzy, the more we help each other. Share this secured link to invite even more people from {{orgName}} to join. <br/> {{invitationUrl}}": "Plus nous sommes sur Wingzy, plus nous nous entraidons. Partagez ce lien sécurisé pour inviter d'autres personnes de {{orgName}} à vous rejoindre. <br/> {{invitationUrl}}",
-	"WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>": "WINGZY L'Annuaire Intelligent qui révèle les Wings de votre entreprise <br/> Pour toutes questions, <a href='mailto:contact@wingzy.com'>contact us.</a>"
+	"WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>": "WINGZY L'Annuaire Intelligent qui révèle les Wings de votre entreprise <br/> Pour toutes questions, <a href='mailto:contact@wingzy.com'>contact us.</a>",
+	"Spread your Wings {{firstName}}!": "Spread your Wings {{firstName}}!",
+	"Welcome to the Wingzy of {{orgName}}": "Welcome to the Wingzy of {{orgName}}",
+	"{{firstName}},<br/>Thank for sharing your Wings with the people of {{orgName}}. <br/>Now, everytime you need help go to Wingzy to find it (and much more)!": "{{firstName}},<br/>Thank for sharing your Wings with the people of {{orgName}}. <br/>Now, everytime you need help go to Wingzy to find it (and much more)!",
+	"Search {{orgName}}": "Search {{orgName}}",
+	"Got any question? feedback? advise? <a href='mailto:contact@wingzy.com'>Contact us!</a>": "Got any question? feedback? advise? <a href='mailto:contact@wingzy.com'>Contact us!</a>",
+	"The more we are on Wingzy, the more we help each other. Share this secured link to invite even more people from {{orgName}} to join": "The more we are on Wingzy, the more we help each other. Share this secured link to invite even more people from {{orgName}} to join"
 }
