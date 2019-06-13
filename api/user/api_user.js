@@ -49,7 +49,7 @@ router.put('/welcome/:userId/organisation/:orgId', passport.authenticate('bearer
 
   User.findOne({_id: req.params.userId})
   .populate('orgsAndRecords.record', '_id name tag')
-  .populate('orgsAndRecords.organisation', '_id name tag')
+  .populate('orgsAndRecords.organisation', '_id name tag cover logo')
   .then((user) => {
     user.welcomeToOrganisation(req.params.orgId, (err, userUpdated) => {
       if(err) return res.status(404).json({message: 'User is not linked to this organisation.'});
