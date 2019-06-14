@@ -199,7 +199,7 @@ var EmailHelper = {
             "FromEmail": defaultEmitter,
             "FromName": defaultEmitterName,
             "Subject": res.__("Discover the Wings of %s !", senderName),
-            "MJ-TemplateID": "868473",
+            "MJ-TemplateID": "854412",
             "MJ-TemplateLanguage": true,
             "Recipients": [
               {"Email": email}
@@ -213,8 +213,8 @@ var EmailHelper = {
               "ctaUrl":  url || defaultLink,
               "orgBannerUrl": organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl,
               "orgLogoUrl": organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl,
-              "outro": res.__("WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")
-            }
+              "tagline": res.__("The Smart Directory which reveals your company's Wings "),
+              "outro": res.__("For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")            }
           });
       },
       emailProposeWings: function(recipientName, recipientEmail, senderName, wingsProposed, organisationName, url, res) {
@@ -349,14 +349,15 @@ var EmailHelper = {
           ],
           "Vars": {
             "title": (firstName ? res.__("{{firstName}}, thanks for the help!", {firstName: firstName || ''}) : res.__("Thanks for the help!")),
-            "text": res.__("The more we are on Wingzy, the more we help each other. Share this secured link to invite even more people from {{orgName}} to join",
+            "text": res.__("The more we are on Wingzy, the more we help each other. <br/> Share this secured link to invite even more people from {{orgName}} to join",
               {orgName: (organisation && organisation.name ? organisation.name : 'your company')}),
             "ctaText": invitationUrl,
             "squareIcon": "https://images.emojiterra.com/twitter/v12/512px/1f60d.png",
             "ctaUrl":  invitationUrl || defaultLink,
             "orgBannerUrl": (organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl),
             "orgLogoUrl": (organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl),
-            "outro": res.__("WINGZY The Smart Directory which reveals your company's Wings <br/> For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")
+            "tagline": res.__("The Smart Directory which reveals your company's Wings "),
+            "outro": res.__("For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")
           }
         });
     },
@@ -437,8 +438,8 @@ var EmailHelper = {
               "orgBannerUrl": (organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl),
               "orgLogoUrl": (organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl),
               "ctaUrl": url || defaultLink,
-              "outro": res.__("Got any question? feedback? advise? <a href='mailto:contact@wingzy.com'>Contact us!</a>")
-            }
+              "tagline": res.__("The Smart Directory which reveals your company's Wings "),
+              "outro": res.__("For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")            }
           });
         return request;
       },
