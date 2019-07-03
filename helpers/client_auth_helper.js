@@ -13,14 +13,13 @@ class ClientAuthHelper {
 					client_id: process.env.LOCALE_CLIENT_ID, 
 					client_secret: process.env.LOCALE_CLIENT_SECRET,
 					grant_type: 'client_credentials',
-	        scope: '*'
+	        scope: 'invitationCode'
 				}
 			}, (error, requestResponse, body) => {
 				if (error || (body && body.status && body.status !== 200) || (requestResponse.statusCode !== 200)) {
-					console.log('error in accesstoken: ' + error + requestResponse.statusCode);
+					console.log('error in accesstoken: ' +requestResponse.statusCode + JSON.stringify(body));
 					return reject(error);
 				}
-				console.log('accessToken: ' + body.access_token);
 				return resolve(body.access_token);
 			});
 		});
