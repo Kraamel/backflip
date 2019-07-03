@@ -58,15 +58,15 @@ router.put('/welcome/:userId/organisation/:orgId', passport.authenticate('bearer
         Record.findOneAndUpdate({_id: orgAndRecord.record._id}, {$set: {hidden: false}} );
         EmailUser.sendConfirmationInscriptionEmail(user, orgAndRecord.organisation, orgAndRecord.record, res);
         EmailUser.sendEmailToInvitationCodeCreator(orgAndRecord.organisation, user, orgAndRecord.record, res);
-
         if(orgAndRecord.organisation.canInvite) {
           var Agenda = require('../../models/agenda_scheduler');
           Agenda.scheduleSendInvitationCta(user, orgAndRecord.organisation, orgAndRecord.record);
         }
       }
-
       return res.status(200).json({message: 'User welcomed to organisation.', user: userUpdated});
     });
+  }).catch(e => {
+    return next(e);
   });
 });
 

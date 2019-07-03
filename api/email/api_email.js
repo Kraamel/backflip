@@ -99,6 +99,7 @@ router.post('/invitation/:orgId/confirmation', passport.authenticate('bearer', {
         userName,
         req.user.locale,
         req.body.invitationUrl,
+		    (new UrlHelper(organisation.tag, null, null, user.locale)).getUrl(),
         res)
         .then(() => {
 	        return res.status(200).json({message: 'Email send with success.'});

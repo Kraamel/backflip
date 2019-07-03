@@ -192,7 +192,6 @@ var EmailHelper = {
       },
       emailInvitationAccepted: function(recipientName, email, senderName, senderEmail, organisation, url, res) {
         console.log('EMAIL: Send email to inform that someone register the organisation thanks to him. (to:'+email+', locale:'+res.getLocale()+')');
-
         return mailjet
           .post("send")
           .request({
@@ -213,8 +212,9 @@ var EmailHelper = {
               "ctaUrl":  url || defaultLink,
               "orgBannerUrl": organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl,
               "orgLogoUrl": organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl,
-              "tagline": res.__("The Smart Directory which reveals your company's Wings "),
-              "outro": res.__("For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")            }
+              "tagline": res.__("Find the right person at the right time within %s at %s",  organisation && organisation.name ? organisation.name : 'your company', url || defaultLink),
+              "outro": res.__("Got any question? feedback? advise? Contact us! <a href='mailto:contact@wingzy.com'>contact us.</a>")
+            }
           });
       },
       emailProposeWings: function(recipientName, recipientEmail, senderName, wingsProposed, organisationName, url, res) {
@@ -333,7 +333,7 @@ var EmailHelper = {
           console.log(err);
         });
     },
-    emailConfirmationInvitation: function (email, organisation, firstName, locale, invitationUrl, res) {
+    emailConfirmationInvitation: function (email, organisation, firstName, locale, invitationUrl, orgUrl, res) {
       console.log('EMAIL: Send email to confirm invitation code creation. (to:'+email+', locale:'+locale+')');
       res.setLocale(locale);
       return mailjet
@@ -356,8 +356,8 @@ var EmailHelper = {
             "ctaUrl":  invitationUrl || defaultLink,
             "orgBannerUrl": (organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl),
             "orgLogoUrl": (organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl),
-            "tagline": res.__("The Smart Directory which reveals your company's Wings "),
-            "outro": res.__("For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")
+            "tagline": res.__("Find the right person at the right time within %s at %s",  organisation && organisation.name ? organisation.name : 'your company', orgUrl || defaultLink),
+            "outro": res.__("Got any question? feedback? advise? Contact us! <a href='mailto:contact@wingzy.com'>contact us.</a>")
           }
         });
     },
@@ -409,8 +409,8 @@ var EmailHelper = {
               "tips": tips ? i18n.__(tips) : '',
               "orgBannerUrl": (organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl),
               "orgLogoUrl": (organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl),
-              "outro": i18n.__("For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a><br/><a href='{{unsubLink}}'>Click here to unsubscribe.</a>",
-                        {unsubLink: urlUnsubscribe})
+              "tagline": res.__("Find the right person at the right time within %s at %s",  organisation && organisation.name ? organisation.name : 'your company', url || defaultLink),
+              "outro": res.__("Got any question? feedback? advise? Contact us! <a href='mailto:contact@wingzy.com'>contact us.</a><br/><a href='{{unsubLink}}'>Click here to unsubscribe.</a>")
             }
           });
         return request;
@@ -438,8 +438,9 @@ var EmailHelper = {
               "orgBannerUrl": (organisation && organisation.cover ? organisation.cover.url || defaultBannerUrl : defaultBannerUrl),
               "orgLogoUrl": (organisation && organisation.logo ? organisation.logo.url || defaultLogoUrl : defaultLogoUrl),
               "ctaUrl": url || defaultLink,
-              "tagline": res.__("The Smart Directory which reveals your company's Wings "),
-              "outro": res.__("For any questions, <a href='mailto:contact@wingzy.com'>contact us.</a>")            }
+              "tagline": res.__("Find the right person at the right time within %s at %s",  organisation && organisation.name ? organisation.name : 'your company', url || defaultLink),
+              "outro": res.__("Got any question? feedback? advise? Contact us! <a href='mailto:contact@wingzy.com'>contact us.</a>")
+            }
           });
         return request;
       },

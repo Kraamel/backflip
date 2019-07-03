@@ -229,32 +229,28 @@ EmailUser.sendReactiveUserEmail = function(user, organisation, record, i18n) {
 
 EmailUser.sendEmailToInvitationCodeCreator = function(organisation, user, record, res) {
   ClientAuthHelper.fetchClientAccessToken()
-  .then(accessToken => {
-    InvitationCodeHelper.fetchUsedInvitationCode(accessToken, organisation._id, user._id)
-    .then(invitationCode => {
-      if(!invitationCode) return;
-  
-      User.findOne({_id: invitationCode.creator})
-      .populate('orgsAndRecords.record', '_id tag name')
-        .then(userInviter => {
-  
-        let currentOrgAndRecord = userInviter.orgsAndRecords.find(oar => oar.organisation.equals(organisation._id));
-        res.setLocale(userInviter.locale);
-  
-        EmailHelper.public.emailInvitationAccepted(
-          currentOrgAndRecord.record.name.split(' ')[0],
-          userInviter.loginEmail,
-          record.name,
-          null,
-          organisation,
-          (process.env.NODE_ENV === 'development' ? 'http://' : 'https://') +
-            `${process.env.HOST_FRONTFLIP}/${userInviter.locale}/${organisation.tag}/${record.tag}`,
-          res
-        );
-      });
-    });
-  })
-
+    .then(accessToken => {
+      InvitationCodeHelper.fetchUsedInvitationCode(accessToken, organisation._id, user._id)
+        .then(invitationCode => {
+          if(!invitationCode) return;
+          User.findOne({_id: invitationCode.creator})
+            .populate('orgsAndRecords.record', '_id tag name')
+            .then(userInviter => {
+              let currentOrgAndRecord = userInviter.orgsAndRecords.find(oar => oar.organisation.equals(organisation._id));
+              res.setLocale(userInviter.locale);
+              EmailHelper.public.emailInvitationAccepted(
+                currentOrgAndRecord.record.name.split(' ')[0],
+                userInviter.loginEmail,
+                record.name,
+                null,
+                organisation,
+                (process.env.NODE_ENV === 'development' ? 'http://' : 'https://') +
+                `${process.env.HOST_FRONTFLIP}/${userInviter.locale}/${organisation.tag}/${record.tag}`,
+                res
+              );
+            }).catch(e => console.log('erreuruserInviter: ' + e));
+        }).catch(e => console.log('erreurinvitationcode: ' +e));
+    }).catch(e => console.log('erreuraccesstoken: ' +e))
 }
 
 EmailUser.sendInvitationCtaEmail = function(user, organisation, record, i18n) {
@@ -274,7 +270,6 @@ EmailUser.sendInvitationCtaEmail = function(user, organisation, record, i18n) {
     });
   });
 }
-
 
 //@todo this should not be here as the logic is shared with other login strategies.
 //@todo rewrite to allow all login strategies

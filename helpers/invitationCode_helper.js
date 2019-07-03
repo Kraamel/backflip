@@ -13,11 +13,9 @@ class InvitationCodeHelper {
 					'Authorization': `Bearer ${accessToken}`
 				}
 			}, (error, requestResponse, body) => {
-
 				if (error || (body && body.status && body.status !== 200) || (requestResponse.statusCode !== 200)) {
 					return reject(error);
 				}
-
 				if(body && body.data && body.data.length > 0) {
 					return resolve(body.data[0]);
 				} else {
